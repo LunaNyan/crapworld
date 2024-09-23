@@ -36,6 +36,8 @@ body {
 }
 
 #book_inset {
+  font-family: 'Galmuri14';
+  font-size: 12pt;
   border-radius: 20px;
   background: #ffffff;
   padding: 16px;
@@ -43,23 +45,4 @@ body {
   height: 560px;
   margin: auto auto;
   border: dashed #7f7f7f 2px;
-}
-
-#hompy_title {
-  margin: 4px 4px;
-  font-family: 'Galmuri14';
-  font-size: 12pt;
-  font-weight: bold;
-}
-
-#book_content {
-  font-family: 'Galmuri11';
-  font-size: 10pt;
-  border-radius: 16px;
-  background: #eeeeff;
-  padding: 16px;
-  width: 820px;
-  height: 480px;
-  margin: 20px 0px;
-  border: solid #3f3f3f 2px;
 }
