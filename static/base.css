@@ -9,6 +9,20 @@ body {
   background-color: #9fe7ff;
 }
 
+.footer {
+  background: #ffffff;
+  box-shadow: 0px 0px 4px #333333;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 4px;
+  font-family: 'Galmuri9';
+  font-size: 12px;
+  text-align: center;
+  color: #333333;
+}
+
 #book_cover {
   border-radius: 32px;
   background: #d1edff;
@@ -22,8 +36,6 @@ body {
 }
 
 #book_inset {
-  font-family: 'Galmuri14';
-  font-size: 12pt;
   border-radius: 20px;
   background: #ffffff;
   padding: 16px;
@@ -33,16 +45,21 @@ body {
   border: dashed #7f7f7f 2px;
 }
 
-.footer {
-  background: #ffffff;
-  box-shadow: 0px 0px 4px #333333;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  padding: 4px;
-  font-family: 'Galmuri9';
-  font-size: 12px;
-  text-align: center;
-  color: #333333;
+#hompy_title {
+  margin: 4px 4px;
+  font-family: 'Galmuri14';
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+#book_content {
+  font-family: 'Galmuri11';
+  font-size: 10pt;
+  border-radius: 16px;
+  background: #eeeeff;
+  padding: 16px;
+  width: 820px;
+  height: 480px;
+  margin: 20px 0px;
+  border: solid #3f3f3f 2px;
 }
