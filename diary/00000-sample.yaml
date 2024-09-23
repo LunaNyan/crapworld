@@ -1,0 +1,10 @@
+# 다이어리 엔트리 예시
+title: 예제 제목
+written_at: 1727073641  # epoch time을 사용한다.
+tags:
+  - test1
+  - test2
+header_image: path_to_image  # 후순위에 있음
+content:
+  예제 내용입니다.
+  diary/00000-sample.yaml을 참조하십시오.
