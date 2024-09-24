@@ -20,17 +20,18 @@
 
 .entry_list li {
   display: list-item;
-  list-style-type: square;
+  list-style-type: none;
+  margin-inline-start: -1em;
   line-height: 2;
   text-align: -webkit-match-parent;
 }
 
 .entry_list a:link {
-  color: #001f3f
+  color: #1f3f7f
 }
 
 .entry_list a:visited {
-  color: #001f3f
+  color: #1f3f7f
 }
 
 .list_delimiter {
@@ -52,6 +53,9 @@
   font-size: 12px;
   text-align: left;
   font-weight: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .list_item_selected {
@@ -65,6 +69,9 @@
   font-size: 12px;
   text-align: left;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .entry {
