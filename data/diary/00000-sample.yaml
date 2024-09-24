@@ -1,7 +1,17 @@
 title: 샘플 엔트리
 written_at: 1727169865  # epoch time
+auto_wrap: true
 content: |
-  내용을 작성해주세요.
+  다이어리는 data/diary에 있으며, yaml 포맷입니다.
   
-  자동 개행이 지원됩니다.
+  파일 이름과 관계없이 written_at 속성을 이용하여
+  최신 - 과거 순으로 정렬됩니다.
+  
+  자동 개행이 지원됩니다. auto_wrap 속성으로 켜고 끌 수 있습니다.
+  
   <b>HTML 태그를 <u>사용할 수 있습니다.</u></b>
+
+  <img src="/img/sample_image.jpg">
+  이미지 또한 삽입이 가능합니다.
+  이미지 파일을 data/img에 올린 뒤,
+  src에는 /img/(이미지 파일명)을 입력하시면 됩니다.

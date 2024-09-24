@@ -30,6 +30,7 @@ def basepage(menu_mode=1):
     # 파라미터 수정 개시
     index_html = index_html.replace('{site_title}', site_settings['site_title'])
     index_html = index_html.replace('{hompy_title}', site_settings['hompy_title'])
+    index_html = index_html.replace('{site_url}', site_settings['site_url'])
     index_html = index_html.replace('{app_version}', VERSION)
     # 메뉴
     index_html = index_html.replace('{menu}', get_html_file('assets/html/menu.html'))

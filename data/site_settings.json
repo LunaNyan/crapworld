@@ -1,5 +1,6 @@
 {
   "site_title": "싸구려월드>미니홈피",
-  "hompy_title": "사이트 설정은 <b>data/site-settings.json</b>에서 수정할 수 있습니다.",
-  "bio": "바이오를 HTML 형식으로 삽입합니다. <b>HTML 태그가 <u>지원</u>됩니다.</b>"
+  "hompy_title": "테무에서 산 미니홈피",
+  "site_url": "https://example.com",
+  "bio": "바이오를 삽입합니다. <b>HTML 태그가 <u>지원</u>됩니다.</b>"
 }

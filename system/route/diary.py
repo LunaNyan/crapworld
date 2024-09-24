@@ -9,10 +9,11 @@ import operator
 
 
 class DiaryEntry:
-    def __init__(self, filename, title, written_at, content=None):
+    def __init__(self, filename, title, written_at, auto_wrap, content=None):
         self.filename = filename
         self.title = title
         self.written_at = written_at
+        self.auto_wrap = auto_wrap
         self.content = content
 
 
@@ -27,7 +28,8 @@ def get_list():
             dl.append(DiaryEntry(
                     filename=i.replace(".yaml", ""),
                     title=d['title'],
-                    written_at=d['written_at']
+                    written_at=d['written_at'],
+                    auto_wrap=d['auto_wrap']
             ))
     # written_at을 대조하여 최근 - 과거 순으로 정렬한다.
     dl = sorted(dl, key=operator.attrgetter('written_at'), reverse=True)
@@ -41,6 +43,7 @@ def get_entry(fname):
                 filename=fname,
                 title=d['title'],
                 written_at=d['written_at'],
+                auto_wrap=d['auto_wrap'],
                 content=d['content']
         )
     return res
@@ -94,7 +97,8 @@ def diary_entry(entry):
     # load yaml
     d = get_entry(entry)
     # 자동 개행을 진행한다.
-    cnt = d.content.replace("\n", "<br>")
+    if d.auto_wrap:
+        d.content = d.content.replace("\n", "<br>")
     html = main_renderer.basepage(menu_mode=2)
     # 파라미터 수정
     # TODO : 정상화
@@ -106,5 +110,5 @@ def diary_entry(entry):
                         main_renderer.get_html_file(cnv_path('assets/html/diary_content.html')))
     html = html.replace('{title}', d.title)
     html = html.replace('{written_at}', datetime.fromtimestamp(d.written_at).isoformat())
-    html = html.replace('{entry_content}', cnt)
+    html = html.replace('{entry_content}', d.content)
     return html

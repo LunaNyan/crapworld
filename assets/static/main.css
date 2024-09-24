@@ -6,7 +6,7 @@
   width: 120px;
   height: 120px;
   position: relative;
-  top: 64px;
+  top: 54px;
   left: 60px;
 }
 
@@ -31,11 +31,12 @@
   background-attachment: local;
   font-family: 'Galmuri14';
   font-size: 14px;
+  line-height: 22px;
   z-index: 10002;
   width: 428px;
   height: 360px;
   position: relative;
-  top: -282px;
+  top: -292px;
   left: 236px;
   padding: 4px;
   overflow-wrap: anywhere;
