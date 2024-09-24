@@ -22,3 +22,22 @@
   overflow-wrap: anywhere;
   overflow: auto;
 }
+
+.home_content {
+  /* https://10015.io/tools/css-background-pattern-generator */
+  background-image: repeating-linear-gradient(0deg, #ffffff, #d1eeff 1px, transparent 1px, transparent);
+  background-size: 23px 22px;
+  background-color: #ffffff;
+  background-attachment: local;
+  font-family: 'Galmuri14';
+  font-size: 14px;
+  z-index: 10002;
+  width: 428px;
+  height: 360px;
+  position: relative;
+  top: -282px;
+  left: 236px;
+  padding: 4px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}

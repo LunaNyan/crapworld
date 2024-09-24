@@ -26,4 +26,5 @@ if __name__ == '__main__':
     log.info("Starting Server")
     server.app.run(host="0.0.0.0", port=conf.listen_port)
 
-app = server.app
+def create_site():
+    return server.app

@@ -26,11 +26,11 @@
 }
 
 .entry_list a:link {
-	color: #001f3f
+  color: #001f3f
 }
 
 .entry_list a:visited {
-	color: #001f3f
+  color: #001f3f
 }
 
 .list_delimiter {
@@ -44,6 +44,17 @@
 }
 
 .list_item {
+  padding-left: 8px;
+  margin-bottom: 8px;
+  font-family: 'Galmuri11';
+  font-weight: normal;
+  color: #000000;
+  font-size: 12px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.list_item_selected {
   background: #d1eeff;
   border-radius: 14px;
   padding-left: 8px;
@@ -53,6 +64,7 @@
   color: #000000;
   font-size: 12px;
   text-align: left;
+  font-weight: bold;
 }
 
 .entry {
@@ -91,4 +103,13 @@
   font-weight: normal;
   text-align: right;
   margin-right: 8px;
+}
+
+.entry_content_placeholder {
+  font-family: 'Galmuri14';
+  font-size: 16px;
+  font-weight: normal;
+  text-align: center;
+  color: #7f7f7f;
+  padding-top: 128px;
 }

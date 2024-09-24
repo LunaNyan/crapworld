@@ -3,7 +3,9 @@ from system.tool import main_renderer
 from system.tool.dirpath_delimiter import cnv_path
 from os import listdir
 from datetime import datetime
+from flask import abort
 import yaml
+import operator
 
 
 class DiaryEntry:
@@ -15,7 +17,7 @@ class DiaryEntry:
 
 
 def get_list():
-    dir_list = sorted(listdir(cnv_path("data/diary")))
+    dir_list = listdir(cnv_path("data/diary"))
     dl: list[DiaryEntry] = []
     for i in dir_list:
         if not i.endswith('.yaml'):
@@ -23,15 +25,17 @@ def get_list():
         with open(cnv_path(f"data/diary/{i}")) as f:
             d = yaml.load(f, yaml.FullLoader)
             dl.append(DiaryEntry(
-                    filename=i,
+                    filename=i.replace(".yaml", ""),
                     title=d['title'],
                     written_at=d['written_at']
             ))
+    # written_at을 대조하여 최근 - 과거 순으로 정렬한다.
+    dl = sorted(dl, key=operator.attrgetter('written_at'), reverse=True)
     return dl
 
 
 def get_entry(fname):
-    with open(cnv_path(f"data/diary/{fname}")) as f:
+    with open(cnv_path(f"data/diary/{fname}.yaml")) as f:
         d = yaml.load(f, yaml.FullLoader)
         res = DiaryEntry(
                 filename=fname,
@@ -59,12 +63,14 @@ def render_list(current=None):
                 ht += html_delimiter_end
             ht += html_delimiter.replace("{group_title}", f"{dt.year}년 {dt.month}월")
         # 지금 보고있는 엔트리인가?
+        print(i.filename, current)
         if i.filename == current:
             ht2 = html_list_item_cur.replace('{title}', i.title)
         else:
             ht2 = html_list_item.replace('{title}', i.title)
             ht2 = ht2.replace('{filename}', i.filename)
-        ht += ht2
+        ht += ht2.replace('{day}', str(dt.day))
+        prev_month = dt.month
     ht += html_delimiter_end
     return ht
 
@@ -76,19 +82,26 @@ def diary_home():
                         main_renderer.get_html_file(cnv_path('assets/html/diary_main.html')))
     html = html.replace('{extra_css}', 'diary')
     html = html.replace('{entry_list}', render_list())
+    html = html.replace('{entry_content}',
+                        main_renderer.get_html_file(cnv_path('assets/html/diary_content_placeholder.html')))
     return html
 
 
 @app.route('/diary/<entry>')
 def diary_entry(entry):
+    if ".." in entry:
+        return abort(404)
     # load yaml
     d = get_entry(entry)
+    # 자동 개행을 진행한다.
     cnt = d.content.replace("\n", "<br>")
     html = main_renderer.basepage(menu_mode=2)
+    # 파라미터 수정
+    # TODO : 정상화
     html = html.replace('{content}',
                         main_renderer.get_html_file(cnv_path('assets/html/diary_main.html')))
     html = html.replace('{extra_css}', 'diary')
-    html = html.replace('{entry_list}', render_list())
+    html = html.replace('{entry_list}', render_list(entry))
     html = html.replace('{entry_content}',
                         main_renderer.get_html_file(cnv_path('assets/html/diary_content.html')))
     html = html.replace('{title}', d.title)
