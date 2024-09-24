@@ -23,7 +23,6 @@
   list-style-type: none;
   margin-inline-start: -1em;
   line-height: 2;
-  text-align: -webkit-match-parent;
 }
 
 .entry_list a:link {
