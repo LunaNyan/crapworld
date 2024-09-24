@@ -1,3 +1,5 @@
+from operator import index
+
 from system.appinfo import VERSION
 import logging
 import json
@@ -5,9 +7,12 @@ import json
 log = logging.getLogger(__name__)
 
 
-def get_html_file(filename):
+def get_html_file(filename, auto_br=False):
     ff = open(filename, 'r', encoding='utf-8')
     index_html = ff.read()
+    if auto_br:
+        index_html = index_html.replace("\\\\n", "&#5c;n")
+        index_html = index_html.replace("\n", "<br>")
     ff.close()
     return index_html
 

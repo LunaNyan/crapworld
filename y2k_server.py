@@ -24,7 +24,6 @@ if __name__ == '__main__':
     log.warning("y2k_server.py를 직접 실행하였습니다.")
     log.warning("서버를 prod로 실행할 때는 'python3 -m flask run'을 사용하십시오.")
     log.info("Starting Server")
-    server.app.run(port=conf.listen_port)
+    server.app.run(host="0.0.0.0", port=conf.listen_port)
 
 app = server.app
-
