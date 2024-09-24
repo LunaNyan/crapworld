@@ -1,4 +1,5 @@
 from platform import system
+from system.engine.mgmt import ROOT_DIR
 import logging as log
 
 # OS를 확인한다.
@@ -7,3 +8,9 @@ if system() == "Windows":
     dir_delimiter = "\\"
 else:
     dir_delimiter = "/"
+
+
+def cnv_path(path):
+    t = path.replace("/", dir_delimiter)
+    t = f"{ROOT_DIR}{dir_delimiter}{t}"
+    return t

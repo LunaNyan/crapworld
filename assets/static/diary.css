@@ -1,0 +1,94 @@
+.entry_list {
+  z-index: 10001;
+  width: 144px;
+  height: 360px;
+  padding: 4px;
+  position: relative;
+  top: 56px;
+  left: -4px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
+
+.entry_list ul {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: -2em;
+  margin-inline-end: 0em;
+  padding-inline-start: 40px;
+}
+
+.entry_list li {
+  display: list-item;
+  list-style-type: square;
+  line-height: 2;
+  text-align: -webkit-match-parent;
+}
+
+.entry_list a:link {
+	color: #001f3f
+}
+
+.entry_list a:visited {
+	color: #001f3f
+}
+
+.list_delimiter {
+  font-family: 'Galmuri14';
+  font-size: 16px;
+  padding-bottom: 8px;
+  color: #1f86c2;
+  font-weight: bold;
+  text-align: center;
+  line-height: 2em;
+}
+
+.list_item {
+  background: #d1eeff;
+  border-radius: 14px;
+  padding-left: 8px;
+  margin-bottom: 8px;
+  font-family: 'Galmuri11';
+  font-weight: normal;
+  color: #000000;
+  font-size: 12px;
+  text-align: left;
+}
+
+.entry {
+  /* https://10015.io/tools/css-background-pattern-generator */
+  background-image: repeating-linear-gradient(0deg, #ffffff, #d1eeff 1px, transparent 1px, transparent);
+  background-size: 23px 22px;
+  background-color: #ffffff;
+  background-attachment: local;
+  z-index: 10002;
+  width: 428px;
+  height: 360px;
+  position: relative;
+  top: -312px;
+  left: 236px;
+  padding: 4px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
+
+.entry_title {
+  font-family: 'Galmuri14';
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.entry_content {
+  font-family: 'Galmuri14';
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.entry_footer {
+  font-family: 'Galmuri11';
+  font-size: 12px;
+  font-weight: normal;
+  text-align: right;
+  margin-right: 8px;
+}

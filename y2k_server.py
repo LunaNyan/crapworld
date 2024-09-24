@@ -1,14 +1,14 @@
-from system import appinfo
 from system.engine import server, mgmt
+from os import getcwd, listdir
+mgmt.ROOT_DIR = getcwd()
+
+from system import appinfo
 from system.engine.log_manager import logger as log
 from system.tool.dirpath_delimiter import dir_delimiter
-from conf import conf
-from os import getcwd, listdir
+import conf
 
 log.info("y2k.erpin.club")
 log.info(f"ver : {appinfo.VERSION}")
-
-mgmt.ROOT_DIR = getcwd()
 
 # 페이지 루트를 로드한다.
 route_d = listdir(f"system{dir_delimiter}route")
@@ -27,3 +27,4 @@ if __name__ == '__main__':
     server.app.run(port=conf.listen_port)
 
 app = server.app
+

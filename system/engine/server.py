@@ -1,5 +1,5 @@
 from flask import Flask
-from conf import conf
+import conf
 
 app = Flask(__name__)
 if conf.debug:
