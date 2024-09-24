@@ -41,7 +41,10 @@ body {
   background-image: url("/static/main.png");
   width: 723px;
   height: 487px;
-  margin: 5% auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 8px;
   box-shadow: 0px 0px 12px #3f3f7f;
 }
