@@ -1,8 +1,8 @@
-from operator import index
-
 from system.appinfo import VERSION
 import logging
 import json
+
+from system.tool.dirpath_delimiter import cnv_path
 
 log = logging.getLogger(__name__)
 
@@ -25,7 +25,8 @@ def get_settings():
 
 
 def basepage(menu_mode=1):
-    index_html = get_html_file('assets/html/index.html')
+    settings = get_settings()
+    index_html = get_html_file(cnv_path(f'theme/{settings["theme"]}/html/index.html'))
     site_settings = get_settings()
     # 파라미터 수정 개시
     index_html = index_html.replace('{site_title}', site_settings['site_title'])
@@ -33,7 +34,8 @@ def basepage(menu_mode=1):
     index_html = index_html.replace('{site_url}', site_settings['site_url'])
     index_html = index_html.replace('{app_version}', VERSION)
     # 메뉴
-    index_html = index_html.replace('{menu}', get_html_file('assets/html/menu.html'))
+    index_html = index_html.replace('{menu}', get_html_file(
+            cnv_path(f'theme/{settings["theme"]}/html/menu.html')))
     index_html = index_html.replace(f'<img src="/static/m0{menu_mode}_0.png"><br>',
                                     f'<img src="/static/m0{menu_mode}_1.png"><br>',)
     return index_html

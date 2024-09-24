@@ -7,6 +7,8 @@ from flask import abort
 import yaml
 import operator
 
+settings = main_renderer.get_settings()
+
 
 class DiaryEntry:
     def __init__(self, filename, title, written_at, auto_wrap, content=None):
@@ -50,10 +52,14 @@ def get_entry(fname):
 
 
 def render_list(current=None):
-    html_delimiter = main_renderer.get_html_file(cnv_path("assets/html/diary_delimiter.html"))
-    html_delimiter_end = main_renderer.get_html_file(cnv_path("assets/html/diary_delimiter_end.html"))
-    html_list_item = main_renderer.get_html_file(cnv_path("assets/html/diary_list_item.html"))
-    html_list_item_cur = main_renderer.get_html_file(cnv_path("assets/html/diary_list_item_current.html"))
+    html_delimiter = main_renderer.get_html_file(
+            cnv_path(f"theme/{settings['theme']}/html/diary_delimiter.html"))
+    html_delimiter_end = main_renderer.get_html_file(
+            cnv_path(f"theme/{settings['theme']}/html/diary_delimiter_end.html"))
+    html_list_item = main_renderer.get_html_file(
+            cnv_path(f"theme/{settings['theme']}/html/diary_list_item.html"))
+    html_list_item_cur = main_renderer.get_html_file(
+            cnv_path(f"theme/{settings['theme']}/html/diary_list_item_current.html"))
     prev_month = 0
     # data load
     dd = get_list()
@@ -82,11 +88,13 @@ def render_list(current=None):
 def diary_home():
     html = main_renderer.basepage(menu_mode=2)
     html = html.replace('{content}',
-                        main_renderer.get_html_file(cnv_path('assets/html/diary_main.html')))
+                        main_renderer.get_html_file(
+                                cnv_path(f'theme/{settings["theme"]}/html/diary_main.html')))
     html = html.replace('{extra_css}', 'diary')
     html = html.replace('{entry_list}', render_list())
     html = html.replace('{entry_content}',
-                        main_renderer.get_html_file(cnv_path('assets/html/diary_content_placeholder.html')))
+                        main_renderer.get_html_file(
+                                cnv_path(f'theme/{settings["theme"]}/html/diary_content_placeholder.html')))
     return html
 
 
@@ -103,11 +111,13 @@ def diary_entry(entry):
     # 파라미터 수정
     # TODO : 정상화
     html = html.replace('{content}',
-                        main_renderer.get_html_file(cnv_path('assets/html/diary_main.html')))
+                        main_renderer.get_html_file(
+                                cnv_path(f'theme/{settings["theme"]}/html/diary_main.html')))
     html = html.replace('{extra_css}', 'diary')
     html = html.replace('{entry_list}', render_list(entry))
     html = html.replace('{entry_content}',
-                        main_renderer.get_html_file(cnv_path('assets/html/diary_content.html')))
+                        main_renderer.get_html_file(
+                                cnv_path(f'theme/{settings["theme"]}/html/diary_content.html')))
     html = html.replace('{title}', d.title)
     html = html.replace('{written_at}', datetime.fromtimestamp(d.written_at).isoformat())
     html = html.replace('{entry_content}', d.content)

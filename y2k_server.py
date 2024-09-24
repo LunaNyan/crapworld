@@ -5,6 +5,7 @@ mgmt.ROOT_DIR = getcwd()
 from system import appinfo
 from system.engine.log_manager import logger as log
 from system.tool.dirpath_delimiter import dir_delimiter
+from system.tool.main_renderer import get_settings
 import conf
 
 log.info("y2k.erpin.club")
@@ -19,6 +20,8 @@ for i in sorted(route_d):
         continue
     log.info(f"loading route {i.replace('.py', '')}")
     exec(f"import system.route.{i.replace('.py', '')}")
+
+log.info(f"Using theme {get_settings()['theme']}")
 
 if __name__ == '__main__':
     log.warning("y2k_server.py를 직접 실행하였습니다.")
