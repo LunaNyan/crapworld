@@ -6,9 +6,6 @@ site_title: 싸구려월드>미니홈피
 hompy_title: 테무에서 산 미니홈피
 # 사이트 내 제목 오른쪽에 표시되는 링크
 site_url: https://example.com
-# 좌측 바이오 내용 (HTML)
-bio: |
-  바이오를 삽입합니다. <b>HTML 태그가 <u>지원</u>됩니다.</b>
 # 홈 탭의 이름
 home_tab_name: 홈
 # 다이어리 탭의 이름
