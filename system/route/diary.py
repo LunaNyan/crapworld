@@ -133,8 +133,12 @@ def diary_entry(entry):
                         main_renderer.get_html_file(
                                 cnv_path(f'theme/{settings["theme"]}/html/diary_content.html')))
     html = html.replace('{title}', d.title)
+    # written_at
+    dt = datetime.fromtimestamp(d.written_at).strftime('%x(%a) %X')
+    # escape surrogate
+    dt = dt.encode('utf8','surrogateescape').decode('utf8','surrogateescape')
     html = html.replace('{written_at}',
-                        f"{datetime.fromtimestamp(d.written_at).strftime('%x(%a) %X')}"
+                        f"{dt}"
                         f"{'<br>미공개' if d.unlisted else ''}")
     html = html.replace('{entry_content}', d.content)
     return html
