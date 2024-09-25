@@ -9,7 +9,7 @@ import operator
 import locale
 
 settings = main_renderer.get_settings()
-locale.setlocale(locale.LC_TIME, "ko_KR")
+locale.setlocale(locale.LC_TIME, "ko_KR.UTF-8")
 
 
 class DiaryEntry:
