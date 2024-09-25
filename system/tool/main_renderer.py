@@ -47,8 +47,8 @@ def basepage(menu_mode):
     # 메뉴
     menu_html = get_html_file(cnv_path(f'theme/{settings["theme"]}/html/menu.html'))
     # 메뉴 탭
-    menu_items = make_menu_tab(settings, "/", "홈", menu_mode == "home")
-    menu_items += make_menu_tab(settings, "/diary", "다이어리", menu_mode == "diary")
+    menu_items = make_menu_tab(settings, "/", settings["home_tab_name"], menu_mode == "home")
+    menu_items += make_menu_tab(settings, "/diary", settings["diary_tab_name"], menu_mode == "diary")
     menu_html = menu_html.replace("{menu_items}", menu_items)
     # 메뉴 삽입
     index_html = index_html.replace('{menu}', menu_html)

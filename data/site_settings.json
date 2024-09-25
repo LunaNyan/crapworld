@@ -3,5 +3,7 @@
   "site_title": "싸구려월드>미니홈피",
   "hompy_title": "테무에서 산 미니홈피",
   "site_url": "https://example.com",
-  "bio": "바이오를 삽입합니다. <b>HTML 태그가 <u>지원</u>됩니다.</b>"
+  "bio": "바이오를 삽입합니다. <b>HTML 태그가 <u>지원</u>됩니다.</b>",
+  "home_tab_name": "홈",
+  "diary_tab_name": "다이어리"
 }
