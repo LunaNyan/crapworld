@@ -11,11 +11,12 @@ settings = main_renderer.get_settings()
 
 
 class DiaryEntry:
-    def __init__(self, filename, title, written_at, auto_wrap, content=None):
+    def __init__(self, filename, title, written_at, auto_wrap, unlisted, content=None):
         self.filename = filename
         self.title = title
         self.written_at = written_at
         self.auto_wrap = auto_wrap
+        self.unlisted = unlisted
         self.content = content
 
 
@@ -27,11 +28,14 @@ def get_list():
             continue
         with open(cnv_path(f"data/diary/{i}")) as f:
             d = yaml.load(f, yaml.FullLoader)
+            if d['unlisted']:
+                continue
             dl.append(DiaryEntry(
                     filename=i.replace(".yaml", ""),
                     title=d['title'],
                     written_at=d['written_at'],
-                    auto_wrap=d['auto_wrap']
+                    auto_wrap=d['auto_wrap'],
+                    unlisted=d['unlisted']
             ))
     # written_at을 대조하여 최근 - 과거 순으로 정렬한다.
     dl = sorted(dl, key=operator.attrgetter('written_at'), reverse=True)
@@ -46,6 +50,7 @@ def get_entry(fname):
                 title=d['title'],
                 written_at=d['written_at'],
                 auto_wrap=d['auto_wrap'],
+                unlisted=d['unlisted'],
                 content=d['content']
         )
     return res
@@ -126,6 +131,7 @@ def diary_entry(entry):
                         main_renderer.get_html_file(
                                 cnv_path(f'theme/{settings["theme"]}/html/diary_content.html')))
     html = html.replace('{title}', d.title)
-    html = html.replace('{written_at}', datetime.fromtimestamp(d.written_at).isoformat())
+    html = html.replace('{written_at}',
+                        f"{datetime.fromtimestamp(d.written_at).isoformat()}{'<br>미공개' if d.unlisted else ''}")
     html = html.replace('{entry_content}', d.content)
     return html
