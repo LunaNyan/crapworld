@@ -136,7 +136,7 @@ def diary_entry(entry):
     # written_at
     dt = datetime.fromtimestamp(d.written_at).strftime('%x(%a) %X')
     # escape surrogate
-    dt = dt.encode('utf8','surrogateescape').decode('utf8','surrogateescape')
+    dt = dt.encode('utf8', 'surrogateescape').decode('utf8', 'surrogateescape')
     html = html.replace('{written_at}',
                         f"{dt}"
                         f"{'<br>미공개' if d.unlisted else ''}")
