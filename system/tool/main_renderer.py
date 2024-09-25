@@ -64,4 +64,9 @@ def basepage(menu_mode):
     menu_html = menu_html.replace("{menu_items}", menu_items)
     # 메뉴 삽입
     index_html = index_html.replace('{menu}', menu_html)
+    # footer
+    footer_links = ""
+    for i in site_settings['footer_links']:
+        footer_links += f' | <a href="{i["url"]}">{i["name"]}</a>'
+    index_html = index_html.replace('{footer_links}', footer_links)
     return index_html
