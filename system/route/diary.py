@@ -6,8 +6,10 @@ from datetime import datetime
 from flask import abort
 import yaml
 import operator
+import locale
 
 settings = main_renderer.get_settings()
+locale.setlocale(locale.LC_TIME, "ko_KR")
 
 
 class DiaryEntry:
@@ -132,6 +134,7 @@ def diary_entry(entry):
                                 cnv_path(f'theme/{settings["theme"]}/html/diary_content.html')))
     html = html.replace('{title}', d.title)
     html = html.replace('{written_at}',
-                        f"{datetime.fromtimestamp(d.written_at).isoformat()}{'<br>미공개' if d.unlisted else ''}")
+                        f"{datetime.fromtimestamp(d.written_at).strftime('%x(%a) %X')}"
+                        f"{'<br>미공개' if d.unlisted else ''}")
     html = html.replace('{entry_content}', d.content)
     return html

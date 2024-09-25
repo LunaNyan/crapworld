@@ -1,6 +1,6 @@
 from system.appinfo import VERSION
 import logging
-import json
+import yaml
 
 from system.tool.dirpath_delimiter import cnv_path
 
@@ -19,8 +19,8 @@ def get_html_file(filename, auto_br=False):
 
 def get_settings():
     # 설정 읽어들이기
-    with open("data/site_settings.json", "r", encoding="utf-8") as j:
-        site_settings = json.loads(j.read())
+    with open("data/site_settings.yaml", "r", encoding="utf-8") as j:
+        site_settings = yaml.load(j, yaml.FullLoader)
     return site_settings
 
 
@@ -58,6 +58,9 @@ def basepage(menu_mode):
     # 메뉴 탭
     menu_items = make_menu_tab(settings, "/", settings["home_tab_name"], menu_mode == "home")
     menu_items += make_menu_tab(settings, "/diary", settings["diary_tab_name"], menu_mode == "diary")
+    # 커스텀 가능 탭
+    for i in site_settings['link_tabs']:
+        menu_items += make_menu_tab(settings, i["url"], i["name"], False)
     menu_html = menu_html.replace("{menu_items}", menu_items)
     # 메뉴 삽입
     index_html = index_html.replace('{menu}', menu_html)

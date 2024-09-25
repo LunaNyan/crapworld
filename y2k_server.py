@@ -1,3 +1,4 @@
+from conf import debug
 from system.engine import server, mgmt
 from os import getcwd, listdir
 mgmt.ROOT_DIR = getcwd()
@@ -27,7 +28,8 @@ if __name__ == '__main__':
     log.warning("y2k_server.py를 직접 실행하였습니다.")
     log.warning("서버를 prod로 실행할 때는 'python3 -m flask run'을 사용하십시오.")
     log.info("Starting Server")
-    server.app.run(host="0.0.0.0", port=conf.listen_port)
+    server.app.run(host=conf.listen_host, port=conf.listen_port, debug=conf.debug)
+
 
 def create_site():
     return server.app
