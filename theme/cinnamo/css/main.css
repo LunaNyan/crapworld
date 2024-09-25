@@ -26,8 +26,9 @@
 
 .home_content {
   /* https://10015.io/tools/css-background-pattern-generator */
-  background-image: repeating-linear-gradient(0deg, #ffffff, #d1eeff 1px, transparent 1px, transparent);
-  background-size: 23px 22px;
+  background-image: linear-gradient(90deg, transparent 75%, #ffffff 25%),
+                    repeating-linear-gradient(0deg, #ffffff, #d1eeff 1px, transparent 1px, transparent);
+  background-size: 10px 10px, 22px 22px;
   background-color: #fff;
   background-attachment: local;
   font-family: 'Galmuri14';
