@@ -1,0 +1,25 @@
+# 테마
+theme: cinnamo
+# 브라우저 탭(또는 창)에 표시할 제목
+site_title: 싸구려월드>미니홈피
+# 사이트 내 제목
+hompy_title: 테무에서 산 미니홈피
+# 사이트 내 제목 오른쪽에 표시되는 링크
+site_url: https://example.com
+# 좌측 바이오 내용 (HTML)
+bio: |
+  바이오를 삽입합니다. <b>HTML 태그가 <u>지원</u>됩니다.</b>
+# 홈 탭의 이름
+home_tab_name: 홈
+# 다이어리 탭의 이름
+diary_tab_name: 다이어리
+# 드롭다운 메뉴의 이름
+dropdown_name: 파도타기
+# 드롭다운 메뉴에 표시될 링크
+dropdown_items:
+    - {url: https://example.com, name: 링크 1}
+    - {url: https://example.com, name: 링크 2}
+# 홈 / 다이어리 외에 추가로 표시할 탭
+# 예 : Quesdon 등 질문 사이트를 방명록으로 사용
+link_tabs:
+    - {url: https://example.com, name: 커스텀 탭}
