@@ -85,7 +85,7 @@ def render_list(current=None):
 
 @app.route('/diary')
 def diary_home():
-    html = main_renderer.basepage(menu_mode=2)
+    html = main_renderer.basepage(menu_mode="diary")
     html = html.replace('{content}',
                         main_renderer.get_html_file(
                                 cnv_path(f'theme/{settings["theme"]}/html/diary_main.html')))
@@ -114,7 +114,7 @@ def diary_entry(entry):
     # 자동 개행을 진행한다.
     if d.auto_wrap:
         d.content = d.content.replace("\n", "<br>")
-    html = main_renderer.basepage(menu_mode=2)
+    html = main_renderer.basepage(menu_mode="diary")
     # 파라미터 수정
     # TODO : 정상화
     html = html.replace('{content}',

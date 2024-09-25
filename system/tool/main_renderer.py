@@ -24,7 +24,18 @@ def get_settings():
     return site_settings
 
 
-def basepage(menu_mode=1):
+def make_menu_tab(settings, link: str, tab_name: str, selected: bool):
+    menu_tab = get_html_file(cnv_path(f'theme/{settings["theme"]}/html/menu_tab.html'))
+    menu_tab = menu_tab.replace("{link}", link)
+    menu_tab = menu_tab.replace("{tab_name}", tab_name)
+    if selected:
+        menu_tab = menu_tab.replace("{class_type}", "tab_selected")
+    else:
+        menu_tab = menu_tab.replace("{class_type}", "tab")
+    return menu_tab
+
+
+def basepage(menu_mode):
     settings = get_settings()
     index_html = get_html_file(cnv_path(f'theme/{settings["theme"]}/html/index.html'))
     site_settings = get_settings()
@@ -34,8 +45,11 @@ def basepage(menu_mode=1):
     index_html = index_html.replace('{site_url}', site_settings['site_url'])
     index_html = index_html.replace('{app_version}', VERSION)
     # 메뉴
-    index_html = index_html.replace('{menu}', get_html_file(
-            cnv_path(f'theme/{settings["theme"]}/html/menu.html')))
-    index_html = index_html.replace(f'<img src="/static/m0{menu_mode}_0.png"><br>',
-                                    f'<img src="/static/m0{menu_mode}_1.png"><br>',)
+    menu_html = get_html_file(cnv_path(f'theme/{settings["theme"]}/html/menu.html'))
+    # 메뉴 탭
+    menu_items = make_menu_tab(settings, "/", "홈", menu_mode == "home")
+    menu_items += make_menu_tab(settings, "/diary", "다이어리", menu_mode == "diary")
+    menu_html = menu_html.replace("{menu_items}", menu_items)
+    # 메뉴 삽입
+    index_html = index_html.replace('{menu}', menu_html)
     return index_html

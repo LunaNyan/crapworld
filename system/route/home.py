@@ -7,7 +7,7 @@ settings = main_renderer.get_settings()
 
 @app.route('/')
 def home():
-    html = main_renderer.basepage(menu_mode=1)
+    html = main_renderer.basepage(menu_mode="home")
     site_settings = main_renderer.get_settings()
     html = html.replace('{content}', main_renderer.get_html_file(
             cnv_path(f'theme/{settings["theme"]}/html/home.html')))
