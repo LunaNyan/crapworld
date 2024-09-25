@@ -11,9 +11,13 @@
 <body>
 <div id="main">
     <div class="title"><b>{hompy_title}</b></div>
-    <div class="site_url"><a href="{site_url}">{site_url}</a></div>
+    <div class="site_url"><a href="{site_url}">{site_url}</a>
+</div>
 {menu}
 {content}
+<select class="dropdown" onchange="window.open(value,'_blank');">
+{dropdown_menus}
+</select>
 </div>
 
 <div class="footer">

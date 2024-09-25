@@ -44,6 +44,15 @@ def basepage(menu_mode):
     index_html = index_html.replace('{hompy_title}', site_settings['hompy_title'])
     index_html = index_html.replace('{site_url}', site_settings['site_url'])
     index_html = index_html.replace('{app_version}', VERSION)
+    # 드롭다운
+    drop_html = get_html_file(cnv_path(
+        f'theme/{settings["theme"]}/html/dropdown_name.html')).replace("{name}", site_settings['dropdown_name'])
+    drop_item = get_html_file(cnv_path(f'theme/{settings["theme"]}/html/dropdown_item.html'))
+    for i in site_settings['dropdown_items']:
+        tmp = drop_item.replace('{url}', i['url'])
+        tmp = tmp.replace('{name}', i['name'])
+        drop_html += tmp
+    index_html = index_html.replace('{dropdown_menus}', drop_html)
     # 메뉴
     menu_html = get_html_file(cnv_path(f'theme/{settings["theme"]}/html/menu.html'))
     # 메뉴 탭

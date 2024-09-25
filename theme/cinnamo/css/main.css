@@ -11,11 +11,12 @@
 }
 
 .profile_text {
+  background: #fff;
   font-family: 'Galmuri11';
   font-size: 12px;
   z-index: 10002;
   width: 144px;
-  height: 216px;
+  height: 170px;
   position: relative;
   top: 80px;
   left: 48px;
@@ -27,7 +28,7 @@
   /* https://10015.io/tools/css-background-pattern-generator */
   background-image: repeating-linear-gradient(0deg, #ffffff, #d1eeff 1px, transparent 1px, transparent);
   background-size: 23px 22px;
-  background-color: #ffffff;
+  background-color: #fff;
   background-attachment: local;
   font-family: 'Galmuri14';
   font-size: 14px;
@@ -36,7 +37,7 @@
   width: 428px;
   height: 360px;
   position: relative;
-  top: -292px;
+  top: -246px;
   left: 236px;
   padding: 4px;
   overflow-wrap: anywhere;
