@@ -23,6 +23,8 @@ dropdown_items:
 # 예 : Quesdon 등 질문 사이트를 방명록으로 사용
 link_tabs:
   - {url: https://example.com, name: 커스텀 탭}
+# 페이지 하단 링크 구분선
+footer_delimiter : " | "
 # 페이지 하단에 표시될 링크
 footer_links:
   - {url: https://erpin.club, name: erpin.club}

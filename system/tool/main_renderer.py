@@ -67,6 +67,6 @@ def basepage(menu_mode):
     # footer
     footer_links = ""
     for i in site_settings['footer_links']:
-        footer_links += f' | <a href="{i["url"]}">{i["name"]}</a>'
+        footer_links += f'{site_settings["footer_delimiter"]}<a href="{i["url"]}">{i["name"]}</a>'
     index_html = index_html.replace('{footer_links}', footer_links)
     return index_html
