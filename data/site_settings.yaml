@@ -10,6 +10,8 @@ site_url: https://example.com
 home_tab_name: 홈
 # 다이어리 탭의 이름
 diary_tab_name: 다이어리
+# 드롭다운 메뉴를 사용할 지의 여부
+use_dropdown: true
 # 드롭다운 메뉴의 이름
 dropdown_name: 파도타기
 # 드롭다운 메뉴에 표시될 링크
