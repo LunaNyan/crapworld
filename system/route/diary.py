@@ -72,7 +72,6 @@ def render_list(current=None):
                 ht += html_delimiter_end
             ht += html_delimiter.replace("{group_title}", f"{dt.year}년 {dt.month}월")
         # 지금 보고있는 엔트리인가?
-        print(i.filename, current)
         if i.filename == current:
             ht2 = html_list_item_cur.replace('{title}', i.title)
         else:
@@ -92,9 +91,14 @@ def diary_home():
                                 cnv_path(f'theme/{settings["theme"]}/html/diary_main.html')))
     html = html.replace('{extra_css}', 'diary')
     html = html.replace('{entry_list}', render_list())
-    html = html.replace('{entry_content}',
-                        main_renderer.get_html_file(
-                                cnv_path(f'theme/{settings["theme"]}/html/diary_content_placeholder.html')))
+    if len(get_list()) == 0:
+        html = html.replace('{entry_content}',
+                            main_renderer.get_html_file(
+                                    cnv_path(f'theme/{settings["theme"]}/html/diary_content_no_entry.html')))
+    else:
+        html = html.replace('{entry_content}',
+                            main_renderer.get_html_file(
+                                    cnv_path(f'theme/{settings["theme"]}/html/diary_content_placeholder.html')))
     return html
 
 
@@ -103,7 +107,10 @@ def diary_entry(entry):
     if ".." in entry:
         return abort(404)
     # load yaml
-    d = get_entry(entry)
+    try:
+        d = get_entry(entry)
+    except FileNotFoundError:
+        return abort(404)
     # 자동 개행을 진행한다.
     if d.auto_wrap:
         d.content = d.content.replace("\n", "<br>")

@@ -18,6 +18,17 @@ def static_send(path):
         return abort(404)
 
 
+# css
+@app.route('/css/<path>')
+def css_send(path):
+    fpath = cnv_path(f'theme/{settings["theme"]}/css/{path}')
+    if exists(fpath):
+        return send_file(fpath)
+    else:
+        # Not Found를 리턴한다.
+        return abort(404)
+
+
 # data/img
 @app.route('/img/<path>')
 def static_send_img(path):
