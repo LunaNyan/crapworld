@@ -4,6 +4,7 @@ from system.engine.server import app
 from system.engine.settings import site_settings
 from system.tool import renderer
 from system.tool.etc import cnv_path
+import yaml
 
 
 @app.route('/')
@@ -12,7 +13,9 @@ def home():
     home_content = renderer.get_html_file('data/home_content.html')
     home_bio = renderer.get_html_file('data/bio.html')
 
-    todays_feeling = open(cnv_path("data/todays_feeling.txt"), "r", encoding="utf-8").read()
+    with open("data/todays_feeling.yaml", "r", encoding="utf-8") as j:
+        feeling = yaml.load(j, yaml.FullLoader)
+    todays_feeling = feeling["feeling"]
 
     arg = {
         "{todays_feeling_name}": site_settings["todays_feeling_name"],

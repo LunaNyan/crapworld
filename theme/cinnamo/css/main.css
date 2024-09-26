@@ -30,15 +30,15 @@
   color: #03a1fc;
   position: relative;
   top: 3px;
-  left: 4px;
+  left: 6px;
 }
 
 .feeling_content {
   font-family: 'Galmuri9';
   font-size: 10px;
   position: relative;
-  top: -10px;
-  right: 4px;
+  top: -11px;
+  right: 6px;
   text-align: right;
 }
 
