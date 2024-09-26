@@ -11,9 +11,10 @@ def gallery():
         return abort(404)
     home_html = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/home.html')
     home_bio = renderer.get_html_file('data/bio.html')
-    gallery_content = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/gallery.html')
+    sns_type = site_settings["gallery_sns_type"]
+    gallery_content = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/gallery_{sns_type}.html')
     gallery_content = renderer.fill_args(gallery_content,
-                                         {"{instagram_id}": site_settings["instagram_id"]})
+                                         {"{sns_id}": site_settings["gallery_sns_id"]})
 
     with open("data/todays_feeling.yaml", "r", encoding="utf-8") as j:
         feeling = yaml.load(j, yaml.FullLoader)

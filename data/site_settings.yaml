@@ -26,8 +26,10 @@ dropdown_items:
 
 # 갤러리를 사용할지의 여부
 use_gallery: true
-# Instagram ID
-instagram_id: sanrio_kr
+# 갤러리에 표시할 SNS (instagram, twitter)
+gallery_sns_type: twitter
+# 갤러리 SNS ID
+gallery_sns_id: example
 
 # 다이어리를 사용할지의 여부
 use_diary: true
