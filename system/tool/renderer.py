@@ -82,7 +82,7 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         # 드롭다운 메뉴 HTML에 넣는다.
         drop_html = drop_html.replace("{dropdown_menus}", drop_items)
     else:
-        drop_html = ""
+        drop_html = get_html_file(f'theme/{site_settings["theme"]}/html/dropdown_placeholder.html')
 
     # ===== 하단 링크 만들기 =====
     footer_links = ""
