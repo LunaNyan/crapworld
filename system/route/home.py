@@ -1,9 +1,6 @@
-from idlelib.iomenu import encoding
-
 from system.engine.server import app
 from system.engine.settings import site_settings
 from system.tool import renderer
-from system.tool.etc import cnv_path
 import yaml
 
 
