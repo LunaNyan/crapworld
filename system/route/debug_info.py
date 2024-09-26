@@ -1,7 +1,9 @@
 from system.engine.server import app
+from system.engine.mgmt import BOOT_AT
 from system.engine.settings import site_settings
 from system.tool import renderer
 from system.appinfo import VERSION
+from datetime import datetime
 import flask
 import platform
 import conf
@@ -19,6 +21,7 @@ def debug_info():
     home_content = f"""
     <b>conf.py의 debug가 True입니다.</b><br>
     프로덕션으로 구동할 경우 반드시 False로 변경해 주세요.<br><br>
+    <b>Uptime</b> : {datetime.now() - BOOT_AT}<br>
     <b>Version</b> : {VERSION}<br>
     <b>Branch</b> : {repo.active_branch}<br>
     <b>Git SHA</b> : {repo.head.object.hexsha[-10:]}<br><br>

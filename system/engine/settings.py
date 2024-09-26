@@ -1,16 +1,15 @@
 import logging
 import yaml
 
-
 log = logging.getLogger(__name__)
+site_settings = None
 
 
-def get_settings():
-    # 설정 읽어들이기
+def load_settings():
+    global site_settings
     with open("data/site_settings.yaml", "r", encoding="utf-8") as j:
         site_settings = yaml.load(j, yaml.FullLoader)
-    return site_settings
 
 
-site_settings = get_settings()
+load_settings()
 log.info("site settings loaded")

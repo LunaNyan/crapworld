@@ -1,5 +1,5 @@
 from system.appinfo import VERSION
-from system.engine.settings import site_settings
+from system.engine.settings import site_settings, load_settings
 from system.tool.etc import cnv_path
 import conf
 
@@ -45,6 +45,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str):
     content (str) : 페이지에 삽입될 메인 컨텐츠 HTML
     tab_selected (str) : 선택되었다고 표시할 탭의 변수명
     """
+    if conf.dynamically_reload_site_settings:
+        load_settings()
     index_html = get_html_file(f'theme/{site_settings["theme"]}/html/index.html')
 
     # ===== 탭 만들기 =====
@@ -91,10 +93,10 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str):
         "{hompy_title}": site_settings['hompy_title'],
         "{site_url}": site_settings['site_url'],
         "{menu}": tab_html,
-        "{content}": content,
         "{dropdown}": drop_html,
         "{app_version}": VERSION,
-        "{footer_links}": footer_links
+        "{footer_links}": footer_links,
+        "{content}": content
     }
     index_html = fill_args(index_html, fill_arg)
     return index_html
