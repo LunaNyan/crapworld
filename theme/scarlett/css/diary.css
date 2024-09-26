@@ -1,0 +1,128 @@
+.entry_list {
+  z-index: 10001;
+  width: 144px;
+  height: 282px;
+  padding: 4px;
+  position: relative;
+  top: 44px;
+  left: -6px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
+
+.entry_list ul {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: -2em;
+  margin-inline-end: 0em;
+  padding-inline-start: 40px;
+}
+
+.entry_list li {
+  display: list-item;
+  list-style-type: none;
+  margin-inline-start: -1em;
+  line-height: 2;
+}
+
+.entry_list a:link {
+  color: #d94eab
+}
+
+.entry_list a:visited {
+  color: #d94eab
+}
+
+.list_delimiter {
+  font-family: 'Galmuri14';
+  font-size: 16px;
+  padding-bottom: 8px;
+  color: #b82c80;
+  font-weight: bold;
+  text-align: center;
+  line-height: 2em;
+}
+
+.list_item {
+  padding-left: 8px;
+  margin-bottom: 8px;
+  font-family: 'Galmuri11';
+  font-weight: normal;
+  color: #000000;
+  font-size: 12px;
+  text-align: left;
+  font-weight: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list_item_selected {
+  background: #fcd7ed;
+  border-radius: 14px;
+  padding-left: 8px;
+  margin-bottom: 8px;
+  font-family: 'Galmuri11';
+  font-weight: normal;
+  color: #000000;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entry {
+  /* https://10015.io/tools/css-background-pattern-generator */
+  background-image: linear-gradient(90deg, transparent 75%, #ffffff 25%),
+                    repeating-linear-gradient(0deg, #ffffff, #fcd4ec 1px, transparent 1px, transparent);
+  background-size: 10px 10px, 22px 22px;
+  background-color: #ffffff;
+  background-attachment: local;
+  z-index: 10002;
+  width: 428px;
+  height: 360px;
+  position: relative;
+  top: -246px;
+  left: 236px;
+  padding: 4px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
+
+.entry_title {
+  font-family: 'Galmuri14';
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.entry_content {
+  font-family: 'Galmuri14';
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: normal;
+}
+
+.entry_content img {
+  width: 400px;
+  object-fit: scale-down;
+}
+
+.entry_footer {
+  font-family: 'Galmuri11';
+  font-size: 12px;
+  font-weight: normal;
+  text-align: right;
+  margin-right: 8px;
+}
+
+.entry_content_placeholder {
+  font-family: 'Galmuri14';
+  font-size: 16px;
+  font-weight: normal;
+  text-align: center;
+  color: #7f7f7f;
+  padding-top: 128px;
+}

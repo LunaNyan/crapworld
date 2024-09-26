@@ -1,0 +1,77 @@
+.profile_pic {
+  background-image: url("/img/icon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 10001;
+  width: 120px;
+  height: 120px;
+  position: relative;
+  top: 54px;
+  left: 60px;
+}
+
+.todays_feeling {
+  z-index: 10003;
+  width: 144px;
+  height: 18px;
+  position: relative;
+  top: 68px;
+  left: 46px;
+  border-radius: 6px;
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: #7f7f7f;
+}
+
+.feeling_name {
+  font-family: 'Galmuri9';
+  font-size: 10px;
+  font-weight: bold;
+  color: #ab7587;
+  position: relative;
+  top: 3px;
+  left: 6px;
+}
+
+.feeling_content {
+  font-family: 'Galmuri9';
+  font-size: 10px;
+  position: relative;
+  top: -11px;
+  right: 6px;
+  text-align: right;
+}
+
+.profile_text {
+  background: #fff;
+  font-family: 'Galmuri11';
+  font-size: 12px;
+  z-index: 10002;
+  width: 144px;
+  height: 150px;
+  position: relative;
+  top: 80px;
+  left: 48px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
+
+.home_content {
+  /* https://10015.io/tools/css-background-pattern-generator */
+  background-image: linear-gradient(90deg, transparent 75%, #ffffff 25%),
+                    repeating-linear-gradient(0deg, #ffffff, #fcd4ec 1px, transparent 1px, transparent);
+  background-size: 10px 10px, 22px 22px;
+  background-attachment: local;
+  font-family: 'Galmuri14';
+  font-size: 14px;
+  line-height: 22px;
+  z-index: 10002;
+  width: 428px;
+  height: 360px;
+  position: relative;
+  top: -250px;
+  left: 236px;
+  padding: 4px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
