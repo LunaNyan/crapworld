@@ -29,7 +29,7 @@ MIT 라이센스로 제공됩니다. `LICENSE`를 참조하십시오.
 - [ ] 사이트 관리 도구
 - [ ] Dockerfile
 ### 개선할 것들
-- [ ] 렌더러를 [정상화](https://youtu.be/cYRkZmBuDqI)
-- [ ] `system/route/diary.py`를 [정상화](https://youtu.be/Zr9aV_f0zjM)
+- [x] 렌더러를 [정상화](https://youtu.be/cYRkZmBuDqI)
+- [x] `system/route/diary.py`를 [정상화](https://youtu.be/Zr9aV_f0zjM)
 - [ ] 테마 구조를 [정상화](https://youtu.be/pM0E8KH5bdc)
 - [ ] 이걸 읽고 있는 너의 두 안구를 [정상화](https://youtu.be/HsfHUJEZ_hY)

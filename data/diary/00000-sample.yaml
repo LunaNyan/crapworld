@@ -1,5 +1,6 @@
 title: 샘플 엔트리
 written_at: 1727169865  # epoch time
+# 자동 개행 (content에서 \n을 자동으로 <br>로 바꾸기)의 사용여부
 auto_wrap: true
 # 엔트리를 다이어리 목록에서 숨길지 결정합니다.
 # URL 또는 파일 이름을 알고 있는 경우 엔트리를 볼 수 있습니다.

@@ -1,16 +1,14 @@
 from system.engine.server import app
 from flask import send_file, abort
 from os.path import exists
-from system.tool.dirpath_delimiter import cnv_path
-from system.tool.main_renderer import get_settings
-
-settings = get_settings()
+from system.tool.etc import cnv_path
+from system.engine.settings import site_settings
 
 
 # static
 @app.route('/static/<path>')
 def static_send(path):
-    fpath = cnv_path(f'theme/{settings["theme"]}/static/{path}')
+    fpath = cnv_path(f'theme/{site_settings["theme"]}/static/{path}')
     if exists(fpath):
         return send_file(fpath)
     else:
@@ -21,7 +19,7 @@ def static_send(path):
 # css
 @app.route('/css/<path>')
 def css_send(path):
-    fpath = cnv_path(f'theme/{settings["theme"]}/css/{path}')
+    fpath = cnv_path(f'theme/{site_settings["theme"]}/css/{path}')
     if exists(fpath):
         return send_file(fpath)
     else:

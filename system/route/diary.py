@@ -1,6 +1,7 @@
 from system.engine.server import app
-from system.tool import main_renderer
-from system.tool.dirpath_delimiter import cnv_path
+from system.engine.settings import site_settings
+from system.tool import renderer
+from system.tool.etc import cnv_path
 from os import listdir
 from datetime import datetime
 from flask import abort
@@ -8,7 +9,6 @@ import yaml
 import operator
 import locale
 
-settings = main_renderer.get_settings()
 locale.setlocale(locale.LC_TIME, "ko_KR.UTF-8")
 
 
@@ -58,20 +58,14 @@ def get_entry(fname):
     return res
 
 
-def render_list(current=None):
-    html_delimiter = main_renderer.get_html_file(
-            cnv_path(f"theme/{settings['theme']}/html/diary_delimiter.html"))
-    html_delimiter_end = main_renderer.get_html_file(
-            cnv_path(f"theme/{settings['theme']}/html/diary_delimiter_end.html"))
-    html_list_item = main_renderer.get_html_file(
-            cnv_path(f"theme/{settings['theme']}/html/diary_list_item.html"))
-    html_list_item_cur = main_renderer.get_html_file(
-            cnv_path(f"theme/{settings['theme']}/html/diary_list_item_current.html"))
+def render_list(diary_list: list[DiaryEntry], current=None):
+    html_delimiter = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter.html")
+    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter_end.html")
+    html_list_item = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_list_item.html")
+    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_list_item_current.html")
     prev_month = 0
-    # data load
-    dd = get_list()
     ht = ""
-    for i in dd:
+    for i in diary_list:
         dt = datetime.fromtimestamp(i.written_at)
         # 월자가 바뀐 경우 delimiter를 넣는다.
         if dt.month != prev_month:
@@ -92,53 +86,52 @@ def render_list(current=None):
 
 @app.route('/diary')
 def diary_home():
-    html = main_renderer.basepage(menu_mode="diary")
-    html = html.replace('{content}',
-                        main_renderer.get_html_file(
-                                cnv_path(f'theme/{settings["theme"]}/html/diary_main.html')))
-    html = html.replace('{extra_css}', 'diary')
-    html = html.replace('{entry_list}', render_list())
-    if len(get_list()) == 0:
-        html = html.replace('{entry_content}',
-                            main_renderer.get_html_file(
-                                    cnv_path(f'theme/{settings["theme"]}/html/diary_content_no_entry.html')))
-    else:
-        html = html.replace('{entry_content}',
-                            main_renderer.get_html_file(
-                                    cnv_path(f'theme/{settings["theme"]}/html/diary_content_placeholder.html')))
-    return html
+    placeholder_info = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content_placeholder.html')
+    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content_no_entry.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
+
+    diary_list = get_list()
+
+    arg = {"{entry_list}": render_list(diary_list),
+           "{entry_content}": placeholder_no_entry if len(diary_list) == 0 else placeholder_info}
+    diary_main = renderer.fill_args(diary_main, arg)
+
+    return renderer.render_mainpage(diary_main, "diary", "diary")
 
 
 @app.route('/diary/<entry>')
 def diary_entry(entry):
-    if ".." in entry:
-        return abort(404)
     # load yaml
     try:
+        if ".." in entry:
+            return abort(404)
         d = get_entry(entry)
+        if d.auto_wrap:
+            d.content = d.content.replace("\n", "<br>")
     except FileNotFoundError:
         return abort(404)
-    # 자동 개행을 진행한다.
-    if d.auto_wrap:
-        d.content = d.content.replace("\n", "<br>")
-    html = main_renderer.basepage(menu_mode="diary")
-    # 파라미터 수정
-    # TODO : 정상화
-    html = html.replace('{content}',
-                        main_renderer.get_html_file(
-                                cnv_path(f'theme/{settings["theme"]}/html/diary_main.html')))
-    html = html.replace('{extra_css}', 'diary')
-    html = html.replace('{entry_list}', render_list(entry))
-    html = html.replace('{entry_content}',
-                        main_renderer.get_html_file(
-                                cnv_path(f'theme/{settings["theme"]}/html/diary_content.html')))
-    html = html.replace('{title}', d.title)
+
+    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
+    diary_content = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content.html')
+
     # written_at
     dt = datetime.fromtimestamp(d.written_at).strftime('%x(%a) %X')
     # escape surrogate
     dt = dt.encode('utf8', 'surrogateescape').decode('utf8', 'surrogateescape')
-    html = html.replace('{written_at}',
-                        f"{dt}"
-                        f"{'<br>미공개' if d.unlisted else ''}")
-    html = html.replace('{entry_content}', d.content)
-    return html
+
+    # ===== Content =====
+    arg = {
+        "{title}": d.title,
+        "{written_at}": dt + ('<br>미공개' if d.unlisted else ''),
+        "{entry_content}": d.content
+    }
+    diary_content = renderer.fill_args(diary_content, arg)
+
+    # ===== Diary List =====
+    diary_list = get_list()
+    arg = {"{entry_list}": render_list(diary_list, entry),
+           "{entry_content}": diary_content}
+    diary_main = renderer.fill_args(diary_main, arg)
+
+    # ===== make main html =====
+    return renderer.render_mainpage(diary_main, "diary", "diary")

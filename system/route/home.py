@@ -1,17 +1,18 @@
 from system.engine.server import app
-from system.tool import main_renderer
-from system.tool.dirpath_delimiter import cnv_path
-
-settings = main_renderer.get_settings()
+from system.engine.settings import site_settings
+from system.tool import renderer
 
 
 @app.route('/')
 def home():
-    html = main_renderer.basepage(menu_mode="home")
-    html = html.replace('{content}', main_renderer.get_html_file(
-            cnv_path(f'theme/{settings["theme"]}/html/home.html')))
-    html = html.replace('{home_content}', main_renderer.get_html_file(
-            cnv_path('data/home_content.html')))
-    html = html.replace('{extra_css}', 'main')
-    html = html.replace('{bio}', main_renderer.get_html_file(cnv_path('data/bio.html')))
-    return html
+    home_html = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/home.html')
+    home_content = renderer.get_html_file('data/home_content.html')
+    home_bio = renderer.get_html_file('data/bio.html')
+
+    arg = {
+        "{home_content}": home_content,
+        "{bio}": home_bio
+    }
+    home_html = renderer.fill_args(home_html, arg)
+
+    return renderer.render_mainpage(home_html, "home", "main")
