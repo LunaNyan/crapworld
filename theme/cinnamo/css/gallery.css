@@ -58,14 +58,6 @@
 }
 
 .home_content {
-  /* https://10015.io/tools/css-background-pattern-generator */
-  background-image: linear-gradient(90deg, transparent 75%, #ffffff 25%),
-                    repeating-linear-gradient(0deg, #ffffff, #d1eeff 1px, transparent 1px, transparent);
-  background-size: 10px 10px, 22px 22px;
-  background-attachment: local;
-  font-family: 'Galmuri14';
-  font-size: 14px;
-  line-height: 22px;
   z-index: 10002;
   width: 428px;
   height: 360px;
@@ -73,6 +65,5 @@
   top: -270px;
   left: 236px;
   padding: 4px;
-  overflow-wrap: anywhere;
-  overflow: auto;
+  overflow: hidden;
 }

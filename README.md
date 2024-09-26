@@ -23,16 +23,16 @@ MIT 라이센스로 제공됩니다. `LICENSE`를 참조하십시오.
 ### 만들 것들
 - [x] 커스텀 테마
 - [x] (홈) 오늘의 기분
-- [ ] 사진첩 / 갤러리 (= Instagram 피드)
+- [x] 사진첩 / 갤러리 (= Instagram 피드)
 - [ ] 쥬크박스
 - [ ] 동영상
+- [ ] 사이트 관리 도구
 ### 만들 것들 (후순위)
 - [ ] 방명록 / 게시판
 - [ ] 다이어리 댓글 작성
-- [ ] 사이트 관리 도구
 - [ ] Dockerfile
 ### 개선할 것들
 - [x] 렌더러를 [정상화](https://youtu.be/cYRkZmBuDqI)
 - [x] `system/route/diary.py`를 [정상화](https://youtu.be/Zr9aV_f0zjM)
-- [ ] 테마 구조를 [정상화](https://youtu.be/pM0E8KH5bdc)
-- [ ] 이걸 읽고 있는 너의 두 안구를 [정상화](https://youtu.be/HsfHUJEZ_hY)
+- [x] 테마 구조를 [정상화](https://youtu.be/pM0E8KH5bdc)
+- [x] 이걸 읽고 있는 너의 두 안구를 [정상화](https://youtu.be/HsfHUJEZ_hY)

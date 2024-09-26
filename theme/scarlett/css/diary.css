@@ -1,10 +1,10 @@
 .entry_list {
   z-index: 10001;
   width: 144px;
-  height: 282px;
+  height: 302px;
   padding: 4px;
   position: relative;
-  top: 44px;
+  top: 24px;
   left: -6px;
   overflow-wrap: anywhere;
   overflow: auto;
@@ -84,7 +84,7 @@
   width: 428px;
   height: 360px;
   position: relative;
-  top: -246px;
+  top: -290px;
   left: 236px;
   padding: 4px;
   overflow-wrap: anywhere;

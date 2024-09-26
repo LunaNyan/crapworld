@@ -53,7 +53,10 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
     tab_html = get_html_file(f'theme/{site_settings["theme"]}/html/menu.html')
     # 구현된 기능에 대한 탭
     tab_items = render_tab("/", site_settings["home_tab_name"], tab_selected == "home")
-    tab_items += render_tab("/diary", site_settings["diary_tab_name"], tab_selected == "diary")
+    if site_settings["use_diary"]:
+        tab_items += render_tab("/diary", site_settings["diary_tab_name"], tab_selected == "diary")
+    if site_settings["use_gallery"]:
+        tab_items += render_tab("/gallery", site_settings["gallery_tab_name"], tab_selected == "gallery")
     # 이 밑으로는 사용자가 추가한 탭을 넣는다.
     for i in site_settings['link_tabs']:
         tab_items += render_tab(i["url"], i["name"], False)

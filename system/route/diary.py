@@ -28,7 +28,7 @@ def get_list():
     for i in dir_list:
         if not i.endswith('.yaml'):
             continue
-        with open(cnv_path(f"data/diary/{i}")) as f:
+        with open(cnv_path(f"data/diary/{i}"), "r", encoding="utf-8") as f:
             d = yaml.load(f, yaml.FullLoader)
             if d['unlisted']:
                 continue
@@ -45,7 +45,7 @@ def get_list():
 
 
 def get_entry(fname):
-    with open(cnv_path(f"data/diary/{fname}.yaml")) as f:
+    with open(cnv_path(f"data/diary/{fname}.yaml"), "r", encoding="utf-8") as f:
         d = yaml.load(f, yaml.FullLoader)
         res = DiaryEntry(
                 filename=fname,
@@ -86,6 +86,8 @@ def render_list(diary_list: list[DiaryEntry], current=None):
 
 @app.route('/diary')
 def diary_home():
+    if not site_settings["use_diary"]:
+        return abort(404)
     placeholder_info = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content_placeholder.html')
     placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content_no_entry.html')
     diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
@@ -101,6 +103,8 @@ def diary_home():
 
 @app.route('/diary/<entry>')
 def diary_entry(entry):
+    if not site_settings["use_diary"]:
+        return abort(404)
     # load yaml
     try:
         if ".." in entry:

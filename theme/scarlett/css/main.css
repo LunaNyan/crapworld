@@ -6,7 +6,7 @@
   width: 120px;
   height: 120px;
   position: relative;
-  top: 54px;
+  top: 24px;
   left: 60px;
 }
 
@@ -15,7 +15,7 @@
   width: 144px;
   height: 18px;
   position: relative;
-  top: 68px;
+  top: 44px;
   left: 46px;
   border-radius: 6px;
   border-style: solid;
@@ -28,16 +28,17 @@
   font-size: 10px;
   font-weight: bold;
   color: #ab7587;
-  position: relative;
-  top: 3px;
+  position: absolute;
+  top: 2px;
   left: 6px;
+  text-align: left;
 }
 
 .feeling_content {
   font-family: 'Galmuri9';
   font-size: 10px;
-  position: relative;
-  top: -11px;
+  position: absolute;
+  top: 1px;
   right: 6px;
   text-align: right;
 }
@@ -50,7 +51,7 @@
   width: 144px;
   height: 150px;
   position: relative;
-  top: 80px;
+  top: 60px;
   left: 48px;
   overflow-wrap: anywhere;
   overflow: auto;
@@ -69,7 +70,7 @@
   width: 428px;
   height: 360px;
   position: relative;
-  top: -250px;
+  top: -270px;
   left: 236px;
   padding: 4px;
   overflow-wrap: anywhere;
