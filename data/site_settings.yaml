@@ -27,3 +27,6 @@ footer_delimiter : " | "
 # 페이지 하단에 표시될 링크
 footer_links:
   - {url: https://erpin.club, name: erpin.club}
+# 오늘의 기분 이름
+# 내용은 data/todays_feeling.txt를 열어 수정합니다.
+todays_feeling_name: TODAY IS..

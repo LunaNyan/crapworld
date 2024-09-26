@@ -38,7 +38,7 @@ def render_tab(link: str, tab_name: str, selected: bool):
     return menu_item
 
 
-def render_mainpage(content: str, tab_selected: str, extra_css: str):
+def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_dropdown=True):
     """
     메인 페이지를 렌더링하여 최종적으로 사용자가 보게 되는 HTML을 리턴한다.
 
@@ -62,7 +62,7 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str):
     tab_html = tab_html.replace("{menu_items}", tab_items)
 
     # ===== 드롭다운 메뉴 만들기 =====
-    if site_settings["use_dropdown"]:
+    if enable_dropdown and site_settings["use_dropdown"]:
         # 드롭다운 메뉴 제작에 필요한 HTML을 로드한다.
         drop_html = get_html_file(f'theme/{site_settings["theme"]}/html/dropdown.html')
         drop_items = get_html_file(f'theme/{site_settings["theme"]}/html/dropdown_name.html')

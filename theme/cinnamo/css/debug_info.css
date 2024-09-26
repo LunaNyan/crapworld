@@ -1,0 +1,14 @@
+.home_content {
+  font-family: 'Galmuri14';
+  font-size: 14px;
+  line-height: 22px;
+  z-index: 10002;
+  width: 428px;
+  height: 360px;
+  position: relative;
+  top: 42px;
+  left: 188px;
+  padding: 4px;
+  overflow-wrap: anywhere;
+  overflow: auto;
+}
