@@ -1,6 +1,7 @@
 from system.appinfo import VERSION
 from system.engine.settings import site_settings
 from system.tool.etc import cnv_path
+import conf
 
 
 def get_html_file(filename, auto_br=False):
@@ -54,6 +55,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str):
     # 이 밑으로는 사용자가 추가한 탭을 넣는다.
     for i in site_settings['link_tabs']:
         tab_items += render_tab(i["url"], i["name"], False)
+    if conf.debug:
+        tab_items += render_tab("/debug", "디버그", tab_selected == "debug")
     tab_html = tab_html.replace("{menu_items}", tab_items)
 
     # ===== 드롭다운 메뉴 만들기 =====
