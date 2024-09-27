@@ -6,5 +6,5 @@ debug = True
 dynamically_reload_site_settings = True
 
 # 개발 환경에서만 사용된다.
-listen_host = "127.0.0.1"
+listen_host = "0.0.0.0"
 listen_port = 11111
