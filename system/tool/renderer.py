@@ -57,6 +57,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         tab_items += render_tab("/diary", site_settings["diary_tab_name"], tab_selected == "diary")
     if site_settings["use_gallery"]:
         tab_items += render_tab("/gallery", site_settings["gallery_tab_name"], tab_selected == "gallery")
+    if site_settings["use_guestbook"]:
+        tab_items += render_tab("/guestbook", site_settings["guestbook_tab_name"], tab_selected == "guestbook")
     # 이 밑으로는 사용자가 추가한 탭을 넣는다.
     for i in site_settings['link_tabs']:
         tab_items += render_tab(i["url"], i["name"], False)
