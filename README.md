@@ -30,7 +30,7 @@ MIT 라이센스로 제공됩니다. `LICENSE`를 참조하십시오.
 - [ ] 사이트 관리 도구
 ### 만들 것들 (후순위)
 - [ ] 다이어리 댓글 작성
-- [ ] Dockerfile
+- [x] Dockerfile `개발 모드`
 ### 개선할 것들
 - [x] 렌더러를 [정상화](https://youtu.be/cYRkZmBuDqI)
 - [x] `system/route/diary.py`를 [정상화](https://youtu.be/Zr9aV_f0zjM)
