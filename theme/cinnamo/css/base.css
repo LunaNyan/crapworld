@@ -82,10 +82,12 @@ body {
 .menu {
   font-size: 0px;
   position: relative;
+  height: 384px;
   top: 32px;
   left: 688px;
   clear: both;
-  float: left;
+  float: inline-start;
+  overflow-y: scroll;
 }
 
 /* link style */
