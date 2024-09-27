@@ -1,16 +1,10 @@
-FROM alpine:3.20 as base
-ENV LC_ALL 'C.UTF-8'
+FROM python:3.12.6-alpine
 
-WORKDIR /etc/garbageworld
-COPY . ${WORKDIR}
+ADD . /app
+WORKDIR /app
 
-RUN \
-    apk add --update --no-cache curl py-pip
-    pip install -r /etc/garbageworld/requirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 11111
 
-COPY docker/docker-entrypoint.sh /docker-entrypoint.sh
-
-USER ${USER_ID}
-ENTRYPOINT ["/bin/sh", "/docker-entrypoint.sh"]
+CMD ['python', './y2k_server.py']
