@@ -1,4 +1,4 @@
-FROM python:3.12.6-slim-bookworm as base
+FROM alpine:3.20 as base
 ENV LC_ALL 'C.UTF-8'
 
 WORKDIR /etc/garbageworld
