@@ -11,7 +11,7 @@ content: |
   
   <b>HTML 태그를 <u>사용할 수 있습니다.</u></b>
 
-  <img src="/img/sample_image.jpg">
+  <img src="/img/sample_img.png">
   이미지 또한 삽입이 가능합니다.
   이미지 파일을 data/img에 올린 뒤,
   src에는 /img/(이미지 파일명)을 입력하시면 됩니다.
