@@ -88,6 +88,7 @@ body {
   clear: both;
   float: inline-start;
   overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 /* link style */
