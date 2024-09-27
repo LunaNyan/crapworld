@@ -1,6 +1,5 @@
 # 싸구려월드
 ![title01.png](_docs/title01.png)
-![title02.png](_docs/title02.png)
 
 **테무에서 산 싸이월드**
 
