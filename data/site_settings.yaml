@@ -13,6 +13,8 @@ todays_feeling_name: TODAY IS..
 
 # 홈 탭의 이름
 home_tab_name: 홈
+# 프로필 탭의 이름
+profile_tab_name: 프로필
 # 다이어리 탭의 이름
 diary_tab_name: 다이어리
 # 갤러리 탭의 이름
@@ -28,6 +30,11 @@ dropdown_name: 파도타기
 dropdown_items:
   - {url: https://example.com, name: 링크 1}
   - {url: https://example.com, name: 링크 2}
+
+# 프로필을 사용할지의 여부
+use_profile: true
+# 프로필 목록 헤더의 이름
+profile_header_name: 내 소개
 
 # 다이어리를 사용할지의 여부
 use_diary: true

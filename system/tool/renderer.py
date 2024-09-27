@@ -53,6 +53,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
     tab_html = get_html_file(f'theme/{site_settings["theme"]}/html/menu.html')
     # 구현된 기능에 대한 탭
     tab_items = render_tab("/", site_settings["home_tab_name"], tab_selected == "home")
+    if site_settings["use_profile"]:
+        tab_items += render_tab("/profile", site_settings["profile_tab_name"], tab_selected == "profile")
     if site_settings["use_diary"]:
         tab_items += render_tab("/diary", site_settings["diary_tab_name"], tab_selected == "diary")
     if site_settings["use_gallery"]:
