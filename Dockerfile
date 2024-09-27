@@ -5,6 +5,7 @@ WORKDIR /app
 COPY .git/ ./.git/
 
 RUN pip install -r requirements.txt
+RUN apk add git
 
 EXPOSE 11111
 
