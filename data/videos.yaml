@@ -8,3 +8,4 @@
       # https://www.youtube.com/watch?v=를 빼고 ?v= 뒤의 부분을 넣습니다.
       # ※ embed가 비허용된 영상은 사이트 내에서 재생할 수 없습니다.
       youtube_path: jNQXAC9IVRw
+      description: 동영상 목록은 data/videos.yaml에 있습니다.

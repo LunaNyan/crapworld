@@ -7,10 +7,11 @@ import yaml
 
 
 class VideoEntry:
-    def __init__(self, path: str, name: str, youtube_path: str):
+    def __init__(self, path: str, name: str, youtube_path: str, description: str):
         self.path = path
         self.name = name
         self.youtube_path = youtube_path
+        self.description = description
 
 
 class VideoCategory:
@@ -27,7 +28,7 @@ def get_list():
         # videos
         v = []
         for ii in i["videos"]:
-            v.append(VideoEntry(ii["id"], ii["name"], ii["youtube_path"]))
+            v.append(VideoEntry(ii["id"], ii["name"], ii["youtube_path"], ii["description"]))
         dl.append(VideoCategory(i["category_name"], v))
     return dl
 
@@ -38,7 +39,7 @@ def get_entry(video_id):
     for i in d:
         for ii in i["videos"]:
             if ii["id"] == video_id:
-                return ii["name"], ii["youtube_path"]
+                return ii["name"], ii["youtube_path"], ii["description"]
     # 여기로 진입했다 == 못찾았다
     raise IndexError
 
@@ -94,7 +95,7 @@ def video_entry(entry):
         return abort(404)
     # load video entry
     try:
-        display_name, youtube_path = get_entry(entry)
+        display_name, youtube_path, description = get_entry(entry)
     except IndexError:
         return abort(404)
 
@@ -103,7 +104,8 @@ def video_entry(entry):
 
     # ===== Content =====
     arg = {"{title}": display_name,
-           "{youtube_path}": youtube_path}
+           "{youtube_path}": youtube_path,
+           "{description}": description}
     video_content = renderer.fill_args(video_content, arg)
 
     # ===== Diary List =====
