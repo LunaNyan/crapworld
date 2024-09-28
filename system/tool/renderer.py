@@ -57,6 +57,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         tab_items += render_tab("/profile", site_settings["profile_tab_name"], tab_selected == "profile")
     if site_settings["use_diary"]:
         tab_items += render_tab("/diary", site_settings["diary_tab_name"], tab_selected == "diary")
+    if site_settings["use_photo"]:
+        tab_items += render_tab("/photo", site_settings["photo_tab_name"], tab_selected == "photo")
     if site_settings["use_gallery"]:
         tab_items += render_tab("/gallery", site_settings["gallery_tab_name"], tab_selected == "gallery")
     if site_settings["use_guestbook"]:

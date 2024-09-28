@@ -1,0 +1,8 @@
+# 사진 데이터베이스
+
+- name: default  # URL에서 표시되는 변수명
+  display_name: 기본
+  unlisted: false  # 카테고리 목록에서 숨길지의 여부 (URL을 알고 있으면 접근 가능)
+  photos:
+    - path: /img/sample_img.png
+      description: data/photo.yaml을 참조해 주세요.

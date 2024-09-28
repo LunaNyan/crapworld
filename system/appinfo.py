@@ -1,1 +1,1 @@
-VERSION = "r2p1-alpha"
+VERSION = "r3p0-alpha"
