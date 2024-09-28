@@ -23,15 +23,14 @@ MIT 라이센스로 제공됩니다. `LICENSE`를 참조하십시오.
 - [x] 사진첩 / 갤러리 (= Instagram / X 피드)
 - [x] 방명록 / 게시판 (= Quesdon@Planet)
 - [x] 프로필
-- [ ] 사진첩
-- [ ] 쥬크박스
-- [ ] 동영상
+- [x] 사진첩
 - [ ] 사이트 관리 도구
 ### 만들 것들 (후순위)
+- [ ] 쥬크박스
+- [ ] 동영상
+- [ ] 일촌평
+- [ ] 자체 방명록
 - [ ] 다이어리 댓글 작성
-- [x] Dockerfile `개발 모드`
+- [x] Dockerfile `정상 동작한다는 보장 없음`
 ### 개선할 것들
-- [x] 렌더러를 [정상화](https://youtu.be/cYRkZmBuDqI)
-- [x] `system/route/diary.py`를 [정상화](https://youtu.be/Zr9aV_f0zjM)
-- [x] 테마 구조를 [정상화](https://youtu.be/pM0E8KH5bdc)
-- [x] 이걸 읽고 있는 너의 두 안구를 [정상화](https://youtu.be/HsfHUJEZ_hY)
+- [ ] (상시 퀘스트) 성능 개선이 가능한 로직을 [정상화](https://youtu.be/cYRkZmBuDqI)
