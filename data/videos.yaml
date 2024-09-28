@@ -1,0 +1,10 @@
+# 카테고리
+- category_name: 카테고리 1
+  videos:
+    - id: sample  # URL에서 보이게 되는 변수명입니다. 카테고리와 관계없이 중복될 수 없습니다.
+      name: 샘플 동영상 1  # 동영상의 표시명
+      # YouTube 영상 주소
+      # URL이 https://www.youtube.com/watch?v=xn7Ult35DgI 인 경우
+      # https://www.youtube.com/watch?v=를 빼고 ?v= 뒤의 부분을 넣습니다.
+      # ※ embed가 비허용된 영상은 사이트 내에서 재생할 수 없습니다.
+      youtube_path: jNQXAC9IVRw

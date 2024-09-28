@@ -61,6 +61,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         tab_items += render_tab("/photo", site_settings["photo_tab_name"], tab_selected == "photo")
     if site_settings["use_gallery"]:
         tab_items += render_tab("/gallery", site_settings["gallery_tab_name"], tab_selected == "gallery")
+    if site_settings["use_video"]:
+        tab_items += render_tab("/video", site_settings["video_tab_name"], tab_selected == "video")
     if site_settings["use_guestbook"]:
         tab_items += render_tab("/guestbook", site_settings["guestbook_tab_name"], tab_selected == "guestbook")
     # 이 밑으로는 사용자가 추가한 탭을 넣는다.

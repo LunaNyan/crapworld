@@ -31,6 +31,8 @@ photo_tab_name: 사진첩
 gallery_tab_name: 갤러리
 # 방명록
 guestbook_tab_name: 방명록
+# 동영상
+video_tab_name: 동영상
 
 # ===============
 #      드롭다운 메뉴 (파도타기)
@@ -78,6 +80,13 @@ use_gallery: true
 gallery_sns_type: instagram
 # SNS ID
 gallery_sns_id: gov_korea
+
+# ===============
+#      동영상
+# ===============
+
+# 동영상을 사용할지의 여부
+use_video: true
 
 # ===============
 #      방명록
