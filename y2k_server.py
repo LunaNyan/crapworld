@@ -1,11 +1,21 @@
 # 우선 작업
-from os.path import exists
+from os.path import exists, isdir, join, basename
 from system.engine.log_manager import logger as log
 import shutil
+
 # data가 있는지 확인한 뒤, 없으면 skel에서 가져온다.
+def copy_func(src, dst):
+    if isdir(dst):
+        dst = join(dst, basename(src))
+    if exists(dst):
+        # 이미 존재하는 파일은 덮어쓰지 않는다.
+        pass
+    shutil.copy2(src, dst)
+
+
 if not exists("data/site_settings.yaml"):
     log.info("data를 초기화합니다.")
-    shutil.copytree("system/skel", "data", dirs_exist_ok=True)
+    shutil.copytree("system/skel", "data", dirs_exist_ok=True, copy_function=copy_func)
 
 from system.engine import server, mgmt
 from os import getcwd, listdir, cpu_count
