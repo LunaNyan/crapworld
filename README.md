@@ -37,7 +37,7 @@ docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 -
 - [x] 방명록 / 게시판 (= Quesdon@Planet)
 - [x] 프로필
 - [x] 사진첩
-- [x] 동영상
+- [x] 동영상 (= YouTube)
 - [ ] 사이트 관리 도구
 ### 만들 것들 (후순위)
 - [ ] 쥬크박스
@@ -47,3 +47,8 @@ docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 -
 - [x] Dockerfile
 ### 개선할 것들
 - [ ] (상시 퀘스트) 성능 개선이 가능한 로직을 [정상화](https://youtu.be/cYRkZmBuDqI)
+  - [ ] 캐싱 루틴 도입
+- [ ] 사진첩 이미지를 썸네일화하여 트래픽 및 로딩 시간 절감
+- [ ] 방명록을 Quesdon@Planet으로 대체하는건 좋은 방법이 아닌 것 같음
+- [ ] 테마를 css-only화
+- [ ] docs가 필요함
