@@ -23,7 +23,11 @@ docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 -
 ```
 
 ## 라이센스
-MIT 라이센스로 제공됩니다. `LICENSE`를 참조하십시오.
+싸구려월드는 오픈 소스 프로젝트이며, [BSD 3-Clause](https://www.olis.or.kr/license/Detailselect.do?lId=1092) 라이센스로 제공됩니다.
+
+해당 프로젝트를 사용하고자 하는 경우, 라이센스를 준수해야 합니다.
+
+자세한 내용은 `LICENSE`를 참조하십시오.
 
 ## TODO
 ### 만들 것들
