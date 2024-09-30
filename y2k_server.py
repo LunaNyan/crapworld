@@ -1,5 +1,7 @@
 # 우선 작업
 from os.path import exists, isdir, join, basename
+from tabnanny import check
+
 from system.engine.log_manager import logger as log
 import shutil
 
@@ -18,9 +20,14 @@ if not exists("data/site_settings.yaml"):
     shutil.copytree("system/skel", "data", dirs_exist_ok=True, copy_function=copy_func)
 
 from system.engine import server, mgmt
+from system.tool.upgrader import check_upgrade
 from os import getcwd, listdir, cpu_count
 
 mgmt.ROOT_DIR = getcwd()
+
+# Check upgrade
+log.info("Checking fmt_ver")
+check_upgrade()
 
 # 남은 모듈들을 마저 import한다.
 from system import appinfo
@@ -56,6 +63,7 @@ signal.signal(signal.SIGINT, signal_handler)
 if __name__ == '__main__':
     # 서버를 동작시킨다.
     log.info("server ON")
+    cpu_threads = conf.cpu_threads if conf.cpu_threads != 0 else cpu_count()
     if conf.debug:
         server.app.run(host=conf.listen_host, port=conf.listen_port, debug=conf.debug)
     else:
@@ -63,4 +71,4 @@ if __name__ == '__main__':
                        host=conf.listen_host,
                        port=conf.listen_port,
                        clear_untrusted_proxy_headers=True,
-                       threads=cpu_count())
+                       threads=cpu_threads)
