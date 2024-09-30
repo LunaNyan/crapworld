@@ -1,7 +1,5 @@
 # 우선 작업
 from os.path import exists, isdir, join, basename
-from tabnanny import check
-
 from system.engine.log_manager import logger as log
 import shutil
 
