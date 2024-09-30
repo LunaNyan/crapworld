@@ -88,8 +88,6 @@ def photo_category(category):
     d = get_list()
     try:
         for photos in d[category].photos:
-            print(photos.path)
-            print(photos.description)
             arg = {"{img_path}": photos.path, "{description}": photos.description}
             main_content += renderer.fill_args(photo_content, arg)
     except KeyError:

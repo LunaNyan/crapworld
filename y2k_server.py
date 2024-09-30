@@ -1,14 +1,26 @@
+# 우선 작업
+from os.path import exists
+from system.engine.log_manager import logger as log
+import shutil
+# data가 있는지 확인한 뒤, 없으면 skel에서 가져온다.
+if not exists("data/site_settings.yaml"):
+    log.info("data를 초기화합니다.")
+    shutil.copytree("system/skel", "data", dirs_exist_ok=True)
+
 from system.engine import server, mgmt
-from os import getcwd, listdir
+from os import getcwd, listdir, cpu_count
+
 mgmt.ROOT_DIR = getcwd()
 
+# 남은 모듈들을 마저 import한다.
 from system import appinfo
-from system.engine.log_manager import logger as log
 from system.tool.etc import dir_delimiter
 from system.engine.settings import site_settings
+from sys import exit
+import signal
+import waitress
 import conf
 
-log.info("y2k.erpin.club")
 log.info(f"ver : {appinfo.VERSION}")
 
 # 페이지 루트를 로드한다.
@@ -23,12 +35,22 @@ for i in sorted(route_d):
 
 log.info(f"Using theme {site_settings['theme']}")
 
+
+def signal_handler(signal, frame):
+    exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)
+
+
 if __name__ == '__main__':
-    log.warning("y2k_server.py를 직접 실행하였습니다.")
-    log.warning("서버를 prod로 실행할 때는 'python3 -m flask run'을 사용하십시오.")
-    log.info("Starting Server")
-    server.app.run(host=conf.listen_host, port=conf.listen_port, debug=conf.debug)
-
-
-def create_site():
-    return server.app
+    # 서버를 동작시킨다.
+    log.info("server ON")
+    if conf.debug:
+        server.app.run(host=conf.listen_host, port=conf.listen_port, debug=conf.debug)
+    else:
+        waitress.serve(server.app,
+                       host=conf.listen_host,
+                       port=conf.listen_port,
+                       clear_untrusted_proxy_headers=True,
+                       threads=cpu_count())
