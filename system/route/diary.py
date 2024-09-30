@@ -59,10 +59,10 @@ def get_entry(fname):
 
 
 def render_list(diary_list: list[DiaryEntry], current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_list_item_current.html")
+    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
+    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
+    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_list_item.html")
+    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_list_item_current.html")
     prev_month = 0
     ht = ""
     for i in diary_list:
@@ -86,11 +86,11 @@ def render_list(diary_list: list[DiaryEntry], current=None):
 
 @app.route('/diary')
 def diary_home():
-    if not site_settings["use_diary"]:
+    if not site_settings()["use_diary"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
+    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_content_placeholder.html')
+    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_content_no_entry.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
 
     diary_list = get_list()
 
@@ -103,7 +103,7 @@ def diary_home():
 
 @app.route('/diary/<entry>')
 def diary_entry(entry):
-    if not site_settings["use_diary"]:
+    if not site_settings()["use_diary"]:
         return abort(404)
     # load yaml
     try:
@@ -115,8 +115,8 @@ def diary_entry(entry):
     except FileNotFoundError:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
-    diary_content = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_content.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    diary_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_content.html')
 
     # written_at
     dt = datetime.fromtimestamp(d.written_at).strftime('%x(%a) %X')

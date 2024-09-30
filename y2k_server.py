@@ -33,7 +33,7 @@ for i in sorted(route_d):
     log.info(f"loading route {i.replace('.py', '')}")
     exec(f"import system.route.{i.replace('.py', '')}")
 
-log.info(f"Using theme {site_settings['theme']}")
+log.info(f"Using theme {site_settings()['theme']}")
 
 
 def signal_handler(signal, frame):

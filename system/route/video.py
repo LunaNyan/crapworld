@@ -45,10 +45,10 @@ def get_entry(video_id):
 
 
 def render_list(current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings['theme']}/html/video_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings['theme']}/html/video_list_item_current.html")
+    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
+    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
+    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/video_list_item.html")
+    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/video_list_item_current.html")
     ht = ""
     video_category = get_list()
     for n, i in enumerate(video_category):
@@ -72,11 +72,11 @@ def render_list(current=None):
 
 @app.route('/video')
 def video_home():
-    if not site_settings["use_video"]:
+    if not site_settings()["use_video"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/video_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/video_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
+    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/video_content_placeholder.html')
+    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/video_content_no_entry.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
 
     diary_list = get_list()
 
@@ -89,7 +89,7 @@ def video_home():
 
 @app.route('/video/<entry>')
 def video_entry(entry):
-    if not site_settings["use_video"]:
+    if not site_settings()["use_video"]:
         return abort(404)
     if ".." in entry:
         return abort(404)
@@ -99,8 +99,8 @@ def video_entry(entry):
     except IndexError:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
-    video_content = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/video_entry.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    video_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/video_entry.html')
 
     # ===== Content =====
     arg = {"{title}": display_name,

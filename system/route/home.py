@@ -6,7 +6,7 @@ import yaml
 
 @app.route('/')
 def home():
-    home_html = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/home.html')
+    home_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/home.html')
     home_content = renderer.get_html_file('data/home_content.html')
     home_bio = renderer.get_html_file('data/bio.html')
 
@@ -15,7 +15,7 @@ def home():
     todays_feeling = feeling["feeling"]
 
     arg = {
-        "{todays_feeling_name}": site_settings["todays_feeling_name"],
+        "{todays_feeling_name}": site_settings()["todays_feeling_name"],
         "{todays_feeling}": todays_feeling,
         "{home_content}": home_content,
         "{bio}": home_bio

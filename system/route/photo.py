@@ -37,10 +37,10 @@ def get_list():
 
 
 def render_list(category_list: dict[PhotoCategory], current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings['theme']}/html/photo_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings['theme']}/html/photo_list_item_current.html")
+    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
+    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
+    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item.html")
+    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item_current.html")
     ht = html_delimiter.replace("{group_title}", "카테고리")
     for name, cat in category_list.items():
         # 지금 보고있는 엔트리인가?
@@ -56,11 +56,11 @@ def render_list(category_list: dict[PhotoCategory], current=None):
 
 @app.route('/photo')
 def photo_main():
-    if not site_settings["use_profile"]:
+    if not site_settings()["use_profile"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/photo_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/photo_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
+    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_content_placeholder.html')
+    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_content_no_entry.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
 
     category_list = get_list()
 
@@ -73,16 +73,16 @@ def photo_main():
 
 @app.route('/photo/<category>')
 def photo_category(category):
-    if not site_settings["use_photo"]:
+    if not site_settings()["use_photo"]:
         return abort(404)
     if ".." in category:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
 
     # ===== Content =====
     main_content = ""
-    photo_content = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/photo_entry.html')
+    photo_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_entry.html')
 
     # load data
     d = get_list()

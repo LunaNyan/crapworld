@@ -49,11 +49,11 @@ def get_entry(fname):
 
 
 def render_list(profile_list: list[ProfileEntry], current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings['theme']}/html/profile_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings['theme']}/html/profile_list_item_current.html")
-    ht = html_delimiter.replace("{group_title}", site_settings["profile_header_name"])
+    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
+    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
+    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/profile_list_item.html")
+    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/profile_list_item_current.html")
+    ht = html_delimiter.replace("{group_title}", site_settings()["profile_header_name"])
     for i in profile_list:
         # 지금 보고있는 엔트리인가?
         if i.filename == current:
@@ -68,11 +68,11 @@ def render_list(profile_list: list[ProfileEntry], current=None):
 
 @app.route('/profile')
 def profile_home():
-    if not site_settings["use_profile"]:
+    if not site_settings()["use_profile"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/profile_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/profile_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
+    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_content_placeholder.html')
+    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_content_no_entry.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
 
     diary_list = get_list()
 
@@ -85,7 +85,7 @@ def profile_home():
 
 @app.route('/profile/<entry>')
 def profile_entry(entry):
-    if not site_settings["use_profile"]:
+    if not site_settings()["use_profile"]:
         return abort(404)
     # load yaml
     try:
@@ -97,8 +97,8 @@ def profile_entry(entry):
     except FileNotFoundError:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/profile_content.html')
+    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_content.html')
 
     # ===== Content =====
     profile_content = renderer.fill_args(profile_content, {"{entry_content}": d.content})

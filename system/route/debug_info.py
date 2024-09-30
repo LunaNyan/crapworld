@@ -29,7 +29,7 @@ def debug_info():
     <b>Locale</b> : {locale.getlocale(locale.LC_CTYPE)}<br>
     <b>Python</b> : {platform.python_implementation()} {platform.python_version()} ({platform.python_revision()})<br>
     <b>Flask</b> : {flask.__version__}<br><br>
-    <b>theme</b> : {site_settings["theme"]}
+    <b>theme</b> : {site_settings()["theme"]}
     """
 
     arg = {

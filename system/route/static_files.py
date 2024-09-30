@@ -8,7 +8,7 @@ from system.engine.settings import site_settings
 # static
 @app.route('/static/<path>')
 def static_send(path):
-    fpath = cnv_path(f'theme/{site_settings["theme"]}/static/{path}')
+    fpath = cnv_path(f'theme/{site_settings()["theme"]}/static/{path}')
     if exists(fpath):
         return send_file(fpath)
     else:
@@ -19,7 +19,7 @@ def static_send(path):
 # css
 @app.route('/css/<path>')
 def css_send(path):
-    fpath = cnv_path(f'theme/{site_settings["theme"]}/css/{path}')
+    fpath = cnv_path(f'theme/{site_settings()["theme"]}/css/{path}')
     if exists(fpath):
         return send_file(fpath)
     else:

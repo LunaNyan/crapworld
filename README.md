@@ -9,8 +9,17 @@
 ### 직접 구성하기
 1. Python venv를 준비합니다. 개발 환경이 3.11이었으며, 3.12에서 테스트 되었습니다.
 2. `pip install -r requirements.txt`를 실행합니다. 앱 동작에 필요한 PyPI 디펜던시를 설치합니다.
-3. `data/site-settings.yaml`을 수정합니다.
-4. `python3 y2k_server.py`를 실행합니다.
+3. `python3 y2k_server.py`를 실행합니다.
+4. data 디렉터리가 초기화되었습니다. `site_settings.yaml`을 포함한 사이트 구성을 취향에 맞게 변경합니다.
+
+### Docker
+> **Rocky Linux 9.4(x86_64), podman 4.9**를 기준으로 합니다. 배포판 및 Docker 설치 형태에 따라 일부 내용에 차이가 있을 수 있습니다.
+```shell
+# 이미지 빌드
+docker build -t crapworld .
+# 컨테이너를 만들고 실행
+docker run -v [data가 저장될 장소]:/app/data --net podman1 -p 11111:11111 --name [컨테이너 이름] crapworld
+```
 
 ## 라이센스
 MIT 라이센스로 제공됩니다. `LICENSE`를 참조하십시오.
