@@ -44,6 +44,6 @@ docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 -
 - [ ] 일촌평
 - [ ] 자체 방명록
 - [ ] 다이어리 댓글 작성
-- [x] Dockerfile `정상 동작한다는 보장 없음`
+- [x] Dockerfile
 ### 개선할 것들
 - [ ] (상시 퀘스트) 성능 개선이 가능한 로직을 [정상화](https://youtu.be/cYRkZmBuDqI)
