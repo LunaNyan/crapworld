@@ -1,2 +1,2 @@
-VERSION = "r1p1-dev"
+VERSION = "r1p1-beta"
 FMT_VER = 100
