@@ -1,1 +1,2 @@
-VERSION = "r1p0-beta"
+VERSION = "r1p1-beta"
+FMT_VER = 100
