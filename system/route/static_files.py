@@ -36,3 +36,16 @@ def static_send_img(path):
     else:
         # Not Found를 리턴한다.
         return abort(404)
+
+
+# cache/image_thumbnail
+@app.route('/thumbnail/<path>')
+def static_send_tn(path):
+    fpath = cnv_path(f'cache/image_thumbnail/{path}')
+    if exists(fpath):
+        if "entry.yaml" in path:
+            return abort(403)
+        return send_file(fpath)
+    else:
+        # Not Found를 리턴한다.
+        return abort(404)
