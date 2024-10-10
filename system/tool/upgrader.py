@@ -20,7 +20,7 @@ photo_thumbnail_size: 300
     fr = open("data/site_settings.yaml", "r", encoding="utf-8")
     f = fr.read() + "\n" + site_settings_append
     fr.close()
-    f.replace("fmt_ver: 100", "fmt_ver: 102")
+    f = f.replace("fmt_ver: 100", "fmt_ver: 102")
 
     fw = open("data/site_settings.yaml", "w", encoding="utf-8")
     fw.write(f)
