@@ -42,7 +42,7 @@ def check_upgrade():
         # 포맷 업그레이드가 필요하다.
         log.info(f"current data format version is {cur}, which is older than current version {FMT_VER}")
         for cver, stp in upgrade_steps.items():
-            if cur < cver:
+            if cur == cver:
                 log.info(f"running upgrade {stp.__name__}")
                 stp()
         log.info("done")
