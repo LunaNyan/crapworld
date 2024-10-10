@@ -16,3 +16,4 @@ venv
 data/*
 conf.py
 theme/*
+cache/*

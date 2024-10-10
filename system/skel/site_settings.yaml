@@ -1,4 +1,4 @@
-fmt_ver: 100
+fmt_ver: 102
 
 # 테마
 theme: cinnamo
@@ -71,6 +71,10 @@ use_diary: true
 
 # 사진첩을 사용할지의 여부
 use_photo: true
+# 사진첩 썸네일을 사용할지의 여부
+photo_use_thumbnail: true
+# 썸네일 최대 크기(세로)
+photo_thumbnail_size: 300
 
 # ===============
 #      갤러리
