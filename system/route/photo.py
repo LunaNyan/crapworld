@@ -3,12 +3,15 @@ from system.engine.settings import site_settings
 from system.tool import renderer
 from system.tool.etc import cnv_path
 from flask import abort
+from PIL import Image
+import uuid
 import yaml
 
 
 class Photo:
-    def __init__(self, path: str, description: str):
+    def __init__(self, path: str, thumbnail_path: str, description: str):
         self.path = path
+        self.thumbnail_path = thumbnail_path
         self.description = description
 
 
@@ -19,18 +22,45 @@ class PhotoCategory:
         self.photos = photos
 
 
+def make_thumbnail(fpath, ysize):
+    img = Image.open(cnv_path("data/" + fpath))
+    hsize = int(img.size[0] * (ysize / img.size[1]))
+    img = img.resize((hsize, ysize))
+    u = str(uuid.uuid4()) + "." + fpath.split(".")[-1]
+    print(u)
+    img.save(cnv_path("cache/image_thumbnail/" + u))
+    return u
+
+
 def get_list():
     # noinspection PyTypeChecker
     dl: dict[PhotoCategory] = {}
     # load photo.yaml
     with open(cnv_path("data/photo.yaml"), "r", encoding="utf-8") as f:
         d = yaml.load(f, yaml.FullLoader)
+    # load cache
+    with open(cnv_path("cache/image_thumbnail/entry.yaml"), "r", encoding="utf-8") as f:
+        dtn = yaml.load(f, yaml.FullLoader)
     # parse
     for i in d:
         # photos
         photos = []
         for ii in i["photos"]:
-            photos.append(Photo(ii["path"], ii["description"]))
+            # cache
+            if site_settings()['photo_use_thumbnail']:
+                try:
+                    # 썸네일을 찾는다.
+                    thumbnail = dtn[ii['path'].replace("/img/", "")]
+                except KeyError:
+                    # 썸네일이 없다. 만든다.
+                    thumbnail = make_thumbnail(ii['path'], site_settings()["photo_thumbnail_size"])
+                    dtn[ii['path'].replace("/img/", "")] = thumbnail
+                    # cache save
+                    with open(cnv_path("cache/image_thumbnail/entry.yaml"), "w", encoding="utf-8") as f:
+                        yaml.dump(dtn, f)
+            else:
+                thumbnail = ii["path"]
+            photos.append(Photo(ii["path"], thumbnail, ii["description"]))
         # category metadata
         dl[i["name"]] = PhotoCategory(i["display_name"], i["unlisted"], photos)
     return dl
@@ -88,7 +118,9 @@ def photo_category(category):
     d = get_list()
     try:
         for photos in d[category].photos:
-            arg = {"{img_path}": photos.path, "{description}": photos.description}
+            arg = {"{img_path}": photos.path,
+                   "{thumbnail_path}": "/thumbnail/" + photos.thumbnail_path,
+                   "{description}": photos.description}
             main_content += renderer.fill_args(photo_content, arg)
     except KeyError:
         return abort(404)

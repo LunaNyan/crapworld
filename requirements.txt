@@ -2,3 +2,6 @@ flask>=3.0.0
 pyyaml>=6.0.0
 gitpython
 waitress
+
+# r1p2-beta
+pillow
