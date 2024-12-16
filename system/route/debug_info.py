@@ -17,7 +17,7 @@ repo = git.Repo(search_parent_directories=True)
 def debug_info():
     if not conf.debug:
         return flask.abort(404)
-    home_html = renderer.get_html_file(f'theme/{site_settings["theme"]}/html/debug_info.html')
+    home_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/debug_info.html')
     home_content = f"""
     <b>conf.py의 debug가 True입니다.</b><br>
     프로덕션으로 구동할 경우 반드시 False로 변경해 주세요.<br><br>
