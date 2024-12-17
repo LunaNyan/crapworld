@@ -22,6 +22,39 @@ docker build -t crapworld .
 docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 --name [컨테이너 이름] crapworld
 ```
 
+### Apache2를 이용한 리버스 프록시 (Ubuntu)
+
+Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available에 설정 파일을 만든 후, `a2ensite [설정 파일] && systemctl reload apache2`를 실행합니다.
+
+예제 설정 :
+```
+<VirtualHost *:80>
+        ServerName [도메인]
+        Redirect permanent / https://[도메인]
+</VirtualHost>
+
+<VirtualHost *:443>
+        ServerName y2k.erpin.club
+
+        RewriteEngine On
+        RewriteCond %{REQUEST_URI} /api/v[0-9]+/(users/)?websocket [NC,OR]
+        RewriteCond %{HTTP:UPGRADE} ^WebSocket$ [NC,OR]
+        RewriteCond %{HTTP:CONNECTION} ^Upgrade$ [NC]
+        RewriteRule .* ws://127.0.0.1:11111%{REQUEST_URI} [P,QSA,L]
+
+        <Location />
+                Require all granted
+                ProxyPass http://127.0.0.1:11111/
+                ProxyPassReverse http://127.0.0.1:11111/
+                ProxyPassReverseCookieDomain 127.0.0.1 [도메인]
+        </Location>
+
+        SSLCertificateFile /etc/letsencrypt/live/[도메인]/fullchain.pem
+        SSLCertificateKeyFile /etc/letsencrypt/live/[도메인]/privkey.pem
+        Include /etc/letsencrypt/options-ssl-apache.conf
+</VirtualHost>
+```
+
 ## 라이센스
 싸구려월드는 오픈 소스 프로젝트이며, [BSD 3-Clause](https://www.olis.or.kr/license/Detailselect.do?lId=1092) 라이센스로 제공됩니다.
 
@@ -51,4 +84,3 @@ docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 -
 - [x] 사진첩 이미지를 썸네일화하여 트래픽 및 로딩 시간 절감
 - [ ] 방명록을 Quesdon@Planet으로 대체하는건 좋은 방법이 아닌 것 같음
 - [ ] 테마를 css-only화
-- [ ] docs가 필요함
