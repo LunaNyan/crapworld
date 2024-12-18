@@ -1,2 +1,2 @@
-VERSION = "dev-admin-menu"
-FMT_VER = 102
+VERSION = "r2p0-beta"
+FMT_VER = 200

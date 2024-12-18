@@ -1,7 +1,7 @@
 from system.appinfo import VERSION
 from system.engine.settings import site_settings
 from system.tool.etc import cnv_path
-from system.tool.ip_filter import if_local
+from system.tool.ip_filter import if_admin
 from flask import request
 import conf
 
@@ -70,8 +70,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         tab_items += render_tab(i["url"], i["name"], False)
     if conf.debug:
         tab_items += render_tab("/debug", "디버그", tab_selected == "debug")
-    if if_local(request):
-        tab_items += render_tab("/admin", "관리자", tab_selected == "debug")
+    if if_admin(request):
+        tab_items += render_tab("/admin", "관리자", tab_selected == "admin")
     tab_html = tab_html.replace("{menu_items}", tab_items)
 
     # ===== 드롭다운 메뉴 만들기 =====
@@ -104,48 +104,6 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         "{extra_css}": extra_css,
         "{site_title}": site_settings()['site_title'],
         "{hompy_title}": site_settings()['hompy_title'],
-        "{site_url}": site_settings()['site_url'],
-        "{menu}": tab_html,
-        "{dropdown}": drop_html,
-        "{app_version}": VERSION,
-        "{footer_links}": footer_links,
-        "{content}": content
-    }
-    index_html = fill_args(index_html, fill_arg)
-    return index_html
-
-
-def admin_render_mainpage(content: str, tab_selected: str, extra_css: str, enable_dropdown=True):
-    """
-    관리자 페이지를 렌더링하여 최종적으로 사용자가 보게 되는 HTML을 리턴한다.
-
-    content (str) : 페이지에 삽입될 메인 컨텐츠 HTML
-    tab_selected (str) : 선택되었다고 표시할 탭의 변수명
-    """
-    index_html = get_html_file(f'theme/{site_settings()["theme"]}/html/index.html')
-
-    # ===== 탭 만들기 =====
-    tab_html = get_html_file(f'theme/{site_settings()["theme"]}/html/menu.html')
-    # 구현된 기능에 대한 탭
-    tab_items = render_tab("/", "나가기", False)
-    tab_items += render_tab("/admin", "홈", tab_selected == "admin")
-    tab_items += render_tab("/admin/content", "컨텐츠", tab_selected == "admin_content")
-    tab_items += render_tab("/admin/media", "미디어", tab_selected == "admin_media")
-    tab_items += render_tab("/admin/settings", "설정", tab_selected == "admin_settings")
-    tab_html = tab_html.replace("{menu_items}", tab_items)
-
-    drop_html = get_html_file(f'theme/{site_settings()["theme"]}/html/dropdown_placeholder.html')
-
-    # ===== 하단 링크 만들기 =====
-    footer_links = ""
-    for i in site_settings()["footer_links"]:
-        footer_links += f'{site_settings()["footer_delimiter"]}<a href="{i["url"]}">{i["name"]}</a>'
-
-    # 최종적으로 args를 채워넣는다.
-    fill_arg = {
-        "{extra_css}": extra_css,
-        "{site_title}": site_settings()['site_title'] + " (관리자)",
-        "{hompy_title}": site_settings()['hompy_title'] + " (관리자)",
         "{site_url}": site_settings()['site_url'],
         "{menu}": tab_html,
         "{dropdown}": drop_html,

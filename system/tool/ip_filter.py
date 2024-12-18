@@ -1,8 +1,12 @@
 import conf
+from system.engine.settings import site_settings
 from flask import request
 
 
-def if_local(req: request):
+def if_admin(req: request):
+    # use_admin이 false면 뭔 짓을 해도 False가 나오도록 한다.
+    if not site_settings()["use_admin"]:
+        return False, ""
     ip = req.remote_addr
     # if localhost
     if ip.startswith("127."):
