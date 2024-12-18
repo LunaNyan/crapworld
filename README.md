@@ -34,7 +34,8 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
 </VirtualHost>
 
 <VirtualHost *:443>
-        ServerName y2k.erpin.club
+        ServerName [도메인]
+        RemoteIPHeader CF-Connecting-IP
 
         RewriteEngine On
         RewriteCond %{REQUEST_URI} /api/v[0-9]+/(users/)?websocket [NC,OR]

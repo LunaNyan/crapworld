@@ -1,2 +1,2 @@
-VERSION = "r1p3-beta"
+VERSION = "dev-admin-menu"
 FMT_VER = 102

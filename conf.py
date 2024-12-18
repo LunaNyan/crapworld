@@ -19,3 +19,6 @@ listen_host = "0.0.0.0"
 # 서버 포트
 # Docker 환경에서는 11111로 둔다.
 listen_port = 11111
+
+# Cloudflare 사용 여부
+cloudflare = True
