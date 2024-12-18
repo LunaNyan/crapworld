@@ -1,19 +1,21 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool import renderer
-from flask import request
-import yaml
+from system.tool import renderer, ip_filter
+from flask import request, abort
 
 
 @app.route('/admin')
 def admin_home():
-    home_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    home_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_main_content.html')
+    if not ip_filter.if_local(request):
+        return abort(404)
+    admin_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    admin_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_main_content.html')
 
     arg = {
-        "{entry_content}": home_content,
+        "{entry_content}": admin_content,
+        "{entry_list}": "",
         "{ip}": request.remote_addr
     }
-    home_html = renderer.fill_args(home_html, arg)
+    admin_html = renderer.fill_args(admin_html, arg)
 
-    return renderer.admin_render_mainpage(home_html, "admin", "diary")
+    return renderer.admin_render_mainpage(admin_html, "admin", "diary")

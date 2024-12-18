@@ -129,9 +129,9 @@ def admin_render_mainpage(content: str, tab_selected: str, extra_css: str, enabl
     # 구현된 기능에 대한 탭
     tab_items = render_tab("/", "나가기", False)
     tab_items += render_tab("/admin", "홈", tab_selected == "admin")
-    tab_items += render_tab("/admin_content", "컨텐츠", tab_selected == "admin_content")
-    tab_items += render_tab("/admin_media", "미디어", tab_selected == "admin_media")
-    tab_items += render_tab("/admin_settings", "설정", tab_selected == "admin_settings")
+    tab_items += render_tab("/admin/content", "컨텐츠", tab_selected == "admin_content")
+    tab_items += render_tab("/admin/media", "미디어", tab_selected == "admin_media")
+    tab_items += render_tab("/admin/settings", "설정", tab_selected == "admin_settings")
     tab_html = tab_html.replace("{menu_items}", tab_items)
 
     drop_html = get_html_file(f'theme/{site_settings()["theme"]}/html/dropdown_placeholder.html')
