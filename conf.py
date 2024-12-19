@@ -21,4 +21,4 @@ listen_host = "0.0.0.0"
 listen_port = 11111
 
 # Cloudflare 사용 여부
-cloudflare = True
+cloudflare = False

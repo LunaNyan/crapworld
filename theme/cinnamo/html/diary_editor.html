@@ -1,0 +1,11 @@
+        <div class="entry_content">
+            <h3>{page_title}</h3>
+            <form action="/diary/post" method="post">
+                제목 : <input type="text" name="title" value="{title}"><br>
+                파일명 : <input type="text" name="filename" value="{filename}"><br>
+                자동 개행 : <input type="checkbox" name="auto_wrap"{auto_wrap_is_checked}><br>
+                표시 여부 : <input type="checkbox" name="unlisted"{unlisted_is_checked}>미공개<br>
+                <textarea name="content" rows="4" cols="24">{content}</textarea><br>
+                <input type="submit" value="전송">
+            </form>
+        </div><br>

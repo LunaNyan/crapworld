@@ -36,7 +36,7 @@ def render_list(current=None):
 
 @app.route('/admin')
 def admin_home():
-    if not ip_filter.if_admin(request):
+    if not ip_filter.is_admin(request)[0]:
         return abort(404)
     admin_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
     admin_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_main_content.html')

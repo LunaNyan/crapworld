@@ -1,7 +1,7 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
 from system.tool import renderer
-from system.tool.ip_filter import if_admin
+from system.tool.ip_filter import is_admin
 from system.object.profile import render_list, get_entry, get_list
 from flask import abort, request
 
@@ -45,7 +45,7 @@ def profile_entry(entry):
     profile_content = renderer.fill_args(profile_content, {"{entry_content}": d.content})
 
     # ===== Admin Context =====
-    if if_admin(request):
+    if is_admin(request)[0]:
         manage = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_manage.html')
         manage = manage.replace("{filename}", entry)
         profile_content += manage

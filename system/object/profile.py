@@ -1,5 +1,5 @@
 from system.tool.etc import cnv_path
-from system.tool.ip_filter import if_admin
+from system.tool.ip_filter import is_admin
 from system.tool import renderer
 from system.engine.settings import site_settings
 from flask import request
@@ -81,7 +81,7 @@ def render_list(profile_list: list[ProfileEntry], current=None):
             ht2 = ht2.replace('{filename}', i.filename)
         ht += ht2
     # admin인 경우 새로 만들 수 있음
-    if if_admin(request):
+    if is_admin(request)[0]:
         if current == "add_item":
             ht2 = html_list_item_cur.replace('{title}', "<b>새로 만들기</b>")
             ht2 = ht2.replace('{filename}', 'add_item')

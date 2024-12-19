@@ -1,5 +1,10 @@
+from system.engine.settings import site_settings
+from system.tool.ip_filter import is_admin
+from system.tool import renderer
 from system.tool.etc import cnv_path
-from os import listdir
+from os import listdir, remove
+from datetime import datetime
+from flask import request
 import yaml
 import operator
 import locale
@@ -52,3 +57,57 @@ def get_entry(fname):
                 content=d['content']
         )
     return res
+
+
+def add_entry(entry: DiaryEntry):
+    with open(cnv_path(f"data/diary/{entry.filename}.yaml"), "w", encoding="utf-8") as f:
+        yaml_data = {
+            "title": entry.title,
+            "written_at": datetime.now().timestamp(),
+            "auto_wrap": entry.auto_wrap,
+            "unlisted": entry.unlisted,
+            "content": entry.content
+        }
+        yaml.dump(yaml_data, f)
+
+
+def remove_entry(fname):
+    try:
+        remove(cnv_path(f"data/diary/{fname}.yaml"))
+    except FileNotFoundError:
+        pass
+
+
+def render_list(diary_list: list[DiaryEntry], current=None):
+    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
+    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
+    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_list_item.html")
+    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_list_item_current.html")
+    prev_month = 0
+    ht = ""
+    for i in diary_list:
+        dt = datetime.fromtimestamp(i.written_at)
+        # 월자가 바뀐 경우 delimiter를 넣는다.
+        if dt.month != prev_month:
+            if not prev_month == 0:
+                ht += html_delimiter_end
+            ht += html_delimiter.replace("{group_title}", f"{dt.year}년 {dt.month}월")
+        # 지금 보고있는 엔트리인가?
+        if i.filename == current:
+            ht2 = html_list_item_cur.replace('{title}', i.title)
+        else:
+            ht2 = html_list_item.replace('{title}', i.title)
+            ht2 = ht2.replace('{filename}', i.filename)
+        ht += ht2.replace('{day}', str(dt.day))
+        prev_month = dt.month
+    # admin인 경우 새로 만들 수 있음
+    if is_admin(request)[0]:
+        if current == "add_item":
+            ht2 = html_list_item_cur.replace('{day} | <b>{title}</b>', "<b>새로 만들기</b>")
+            ht2 = ht2.replace('{filename}', 'add_item')
+        else:
+            ht2 = html_list_item.replace('{day} | {title}', "<b>새로 만들기</b>")
+            ht2 = ht2.replace('{filename}', 'add_item')
+        ht += ht2
+    ht += html_delimiter_end
+    return ht

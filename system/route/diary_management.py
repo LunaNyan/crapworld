@@ -2,27 +2,30 @@ from system.engine.server import app
 from system.engine.settings import site_settings
 from system.tool import renderer
 from system.tool.ip_filter import is_admin
-from system.object.profile import (
-    ProfileEntry, render_list, get_entry, get_list, remove_entry, add_entry)
+from system.object.diary import (
+    DiaryEntry, render_list, get_entry, get_list, remove_entry, add_entry)
 from flask import abort, request, redirect
+from datetime import datetime
 
 
 # 프로필 추가 요청 POST에 대한 처리
-@app.route('/profile/post', methods=['POST'])
-def profile_post():
+@app.route('/diary/post', methods=['POST'])
+def diary_post():
     if not is_admin(request)[0]:  # use_admin이 false이거나 사용 가능한 IP가 아닌 경우
         return abort(404)
-    if not site_settings()["use_profile"]:  # use_profile이 false인 경우
+    if not site_settings()["use_diary"]:  # use_profile이 false인 경우
         return abort(404)
+
     title = request.form['title']
     filename = request.form['filename']
     content = request.form['content']
     is_unlisted = request.form.get('unlisted')
     is_auto_wrap = request.form.get('auto_wrap')
 
-    entry = ProfileEntry(
+    entry = DiaryEntry(
             filename=filename,
             title=title,
+            written_at=datetime.now().timestamp(),
             auto_wrap=True if not is_auto_wrap is None else False,
             unlisted=True if not is_unlisted is None else False,
             content=content
@@ -33,15 +36,15 @@ def profile_post():
 
 
 # 수정하기
-@app.route('/profile/<entry>/edit')
-def profile_edit(entry):
+@app.route('/diary/<entry>/edit')
+def diary_edit(entry):
     if not is_admin(request)[0]:  # use_admin이 false이거나 사용 가능한 IP가 아닌 경우
         return abort(404)
-    if not site_settings()["use_profile"]:  # use_profile이 false인 경우
+    if not site_settings()["use_diary"]:  # use_profile이 false인 경우
         return abort(404)
 
     diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_editor.html')
+    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_editor.html')
 
     curr_entry = get_entry(entry)
 
@@ -66,15 +69,15 @@ def profile_edit(entry):
 
 
 # 새로 만들기
-@app.route('/profile/add_item')
-def profile_add():
+@app.route('/diary/add_item')
+def diary_add():
     if not is_admin(request)[0]:  # use_admin이 false이거나 사용 가능한 IP가 아닌 경우
         return abort(404)
-    if not site_settings()["use_profile"]:  # use_profile이 false인 경우
+    if not site_settings()["use_diary"]:  # use_profile이 false인 경우
         return abort(404)
 
     diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_editor.html')
+    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_editor.html')
 
     args = {
         "{page_title}": "새로 만들기",
@@ -93,15 +96,15 @@ def profile_add():
     diary_main = renderer.fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "profile", "diary")
+    return renderer.render_mainpage(diary_main, "diary", "diary")
 
 
 # 프로필 삭제하기 전 질문
-@app.route('/profile/<entry>/remove')
-def profile_confirm_remove(entry):
+@app.route('/diary/<entry>/remove')
+def diary_confirm_remove(entry):
     if not is_admin(request)[0]:  # use_admin이 false이거나 사용 가능한 IP가 아닌 경우
         return abort(404)
-    if not site_settings()["use_profile"]:  # use_profile이 false인 경우
+    if not site_settings()["use_diary"]:  # use_profile이 false인 경우
         return abort(404)
 
     # load yaml
@@ -113,31 +116,37 @@ def profile_confirm_remove(entry):
         return abort(404)
 
     diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_confirm_remove.html')
+    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_confirm_remove.html')
 
     # ===== Content =====
     args = {
         "{title}": d.title,
         "{filename}": d.filename
     }
-    profile_content = renderer.fill_args(profile_content, args)
+    content = renderer.fill_args(profile_content, args)
+
+    # ===== Admin Context =====
+    if is_admin(request)[0]:
+        manage = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_manage.html')
+        manage = manage.replace("{filename}", entry)
+        profile_content += manage
 
     # ===== Diary List =====
     profile_list = get_list()
     arg = {"{entry_list}": render_list(profile_list, entry),
-           "{entry_content}": profile_content}
+           "{entry_content}": content}
     diary_main = renderer.fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "profile", "diary")
+    return renderer.render_mainpage(diary_main, "diary", "diary")
 
 
-# 프로필 삭제
-@app.route('/profile/<entry>/confirm_remove')
-def profile_remove(entry):
+# 삭제
+@app.route('/diary/<entry>/confirm_remove')
+def diary_remove(entry):
     if not is_admin(request)[0]:
         return abort(404)
-    if not site_settings()["use_profile"]:
+    if not site_settings()["use_diary"]:
         return abort(404)
     remove_entry(entry)
-    return redirect(location="/profile")
+    return redirect(location="/diary")

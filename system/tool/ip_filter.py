@@ -3,7 +3,7 @@ from system.engine.settings import site_settings
 from flask import request
 
 
-def if_admin(req: request):
+def is_admin(req: request):
     # use_admin이 false면 뭔 짓을 해도 False가 나오도록 한다.
     if not site_settings()["use_admin"]:
         return False, ""
@@ -15,8 +15,7 @@ def if_admin(req: request):
             return False, cf_ip
         else:
             return True, ip
-
-    if ip.startswith("192.168.") or ip.startswith("10."):
+    elif ip.startswith("192.168.") or ip.startswith("10."):
         # Private IP A or C Class
         return True, ip
     elif ip.startswith("172."):
