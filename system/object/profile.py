@@ -24,7 +24,7 @@ def get_list():
             continue
         with open(cnv_path(f"data/profile/{i}"), "r", encoding="utf-8") as f:
             d = yaml.load(f, yaml.FullLoader)
-            if d['unlisted']:
+            if d['unlisted'] and not is_admin(request):
                 continue
             dl.append(ProfileEntry(
                     filename=i.replace(".yaml", ""),

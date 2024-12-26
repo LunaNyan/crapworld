@@ -31,7 +31,7 @@ def get_list():
             continue
         with open(cnv_path(f"data/diary/{i}"), "r", encoding="utf-8") as f:
             d = yaml.load(f, yaml.FullLoader)
-            if d['unlisted']:
+            if d['unlisted'] and not is_admin(request):
                 continue
             dl.append(DiaryEntry(
                     filename=i.replace(".yaml", ""),

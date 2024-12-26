@@ -21,11 +21,11 @@ def profile_post():
     is_auto_wrap = request.form.get('auto_wrap')
 
     entry = ProfileEntry(
-            filename=filename,
-            title=title,
-            auto_wrap=True if not is_auto_wrap is None else False,
-            unlisted=True if not is_unlisted is None else False,
-            content=content
+        filename=filename,
+        title=title,
+        auto_wrap=True if is_auto_wrap is not None else False,
+        unlisted=True if is_unlisted is not None else False,
+        content=content
     )
 
     add_entry(entry)

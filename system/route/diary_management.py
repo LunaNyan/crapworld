@@ -26,8 +26,8 @@ def diary_post():
             filename=filename,
             title=title,
             written_at=datetime.now().timestamp(),
-            auto_wrap=True if not is_auto_wrap is None else False,
-            unlisted=True if not is_unlisted is None else False,
+            auto_wrap=True if is_auto_wrap is not None else False,
+            unlisted=True if is_unlisted is not None else False,
             content=content
     )
 
