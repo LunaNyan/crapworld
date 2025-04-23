@@ -19,3 +19,7 @@ listen_host = "0.0.0.0"
 # 서버 포트
 # Docker 환경에서는 11111로 둔다.
 listen_port = 11111
+
+# Cloudflare 사용 여부
+# True로 설정하면 127.0.0.1이 관리자 모드에 접근할 수 없게 됨.
+cloudflare = False

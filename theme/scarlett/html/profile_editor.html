@@ -1,0 +1,20 @@
+        <div class="entry_content">
+            <h3>{page_title}</h3>
+            <form action="/profile/post" method="post">
+                제목 : <input type="text" name="title" value="{title}"><br>
+                <div class="tooltip">파일명 :
+                    <span class="tooltiptext tooltip-top">게시물의 파일 이름입니다. 게시물 링크 및 브라우저 주소창에 표시됩니다.</span>
+                    <input type="text" name="filename" value="{filename}"><br>
+                </div>
+                <div class="tooltip">자동 개행 :
+                    <span class="tooltiptext tooltip-top">파일 내에서 개행이 &lt;br&gt;로 인식됩니다.<br>일부 상황에서 문제가 발생할 수 있습니다.</span>
+                    <input type="checkbox" name="auto_wrap"{auto_wrap_is_checked}><br>
+                </div>
+                <div class="tooltip">표시 여부 :
+                    <span class="tooltiptext tooltip-top">미공개로 설정하더라도 URL을 알고 있는<br>경우 게시물을 볼 수 있습니다.</span>
+                    <input type="checkbox" name="unlisted"{unlisted_is_checked}>미공개<br>
+                </div>
+                <textarea name="content" rows="4" cols="24">{content}</textarea><br>
+                <input type="submit" value="전송">
+            </form>
+        </div><br>

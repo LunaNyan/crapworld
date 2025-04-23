@@ -1,6 +1,8 @@
 from system.appinfo import VERSION
-from system.engine.settings import site_settings, load_settings
+from system.engine.settings import site_settings
 from system.tool.etc import cnv_path
+from system.tool.ip_filter import is_admin
+from flask import request
 import conf
 
 
@@ -68,6 +70,8 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         tab_items += render_tab(i["url"], i["name"], False)
     if conf.debug:
         tab_items += render_tab("/debug", "디버그", tab_selected == "debug")
+    if is_admin(request)[0]:
+        tab_items += render_tab("/admin", "관리자", tab_selected == "admin")
     tab_html = tab_html.replace("{menu_items}", tab_items)
 
     # ===== 드롭다운 메뉴 만들기 =====

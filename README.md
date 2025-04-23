@@ -13,13 +13,18 @@
 4. `python3 y2k_server.py`를 실행합니다.
 5. data 디렉터리가 초기화되었습니다. `site_settings.yaml`을 포함한 사이트 구성을 취향에 맞게 변경합니다.
 
-### Docker
+### Docker (레포지토리 사용)
 > **Rocky Linux 9.4(x86_64), podman 4.9**를 기준으로 합니다. 배포판 및 Docker 설치 형태에 따라 일부 내용에 차이가 있을 수 있습니다.
 ```shell
 # 이미지 빌드
 docker build -t crapworld .
 # 컨테이너를 만들고 실행
 docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 --name [컨테이너 이름] crapworld
+```
+
+### Docker Hub
+```shell
+docker run -v [data가 저장될 장소]:/app/data -p [원하는 포트]:11111 --name [컨테이너 이름] libertin1/crapworld
 ```
 
 ### Apache2를 이용한 리버스 프록시 (Ubuntu)
@@ -34,7 +39,8 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
 </VirtualHost>
 
 <VirtualHost *:443>
-        ServerName y2k.erpin.club
+        ServerName [도메인]
+        RemoteIPHeader CF-Connecting-IP
 
         RewriteEngine On
         RewriteCond %{REQUEST_URI} /api/v[0-9]+/(users/)?websocket [NC,OR]
@@ -72,7 +78,14 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
 - [x] 사진첩
 - [x] 동영상 (= YouTube)
 - [ ] 사이트 관리 도구
+  - [ ] 기본 설정 `entry 만들어만 놓음`
+  - [ ] 바이오
+  - [ ] 하단 바
+  - [ ] 파도타기
+  - [ ] 커스텀 탭
+  - [ ] 개발자
 ### 만들 것들 (후순위)
+- [ ] HTML 에디터로 Monaco Editor 사용
 - [ ] 쥬크박스
 - [ ] 일촌평
 - [ ] 자체 방명록

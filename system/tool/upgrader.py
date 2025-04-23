@@ -7,6 +7,28 @@ import sys
 # ===== Upgrade =====
 
 
+# 102 → 200
+def do_upgrade_102_to_200():
+    site_settings_append = """
+# ===== r2p0-beta =====
+# 관리자 모드를 사용할지의 여부
+use_admin: true
+"""
+    log.info("automatically editing site_settings.yaml")
+
+    fr = open("data/site_settings.yaml", "r", encoding="utf-8")
+    f = fr.read() + "\n" + site_settings_append
+    fr.close()
+    f = f.replace("fmt_ver: 102", "fmt_ver: 200")
+
+    fw = open("data/site_settings.yaml", "w", encoding="utf-8")
+    fw.write(f)
+    fw.close()
+
+    log.info("upgrade fmt_ver 102 to 200 complete.")
+
+
+# 100 → 102
 def do_upgrade_100_to_102():
     site_settings_append = """
 # ===== r1p2-beta =====
@@ -29,7 +51,8 @@ photo_thumbnail_size: 300
     log.info("upgrade fmt_ver 100 to 102 complete.")
 
 
-upgrade_steps = {100: do_upgrade_100_to_102}
+upgrade_steps = {100: do_upgrade_100_to_102,
+                 102: do_upgrade_102_to_200}
 
 # ===================
 

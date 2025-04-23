@@ -12,6 +12,11 @@ def load_settings():
         settings = yaml.load(j, yaml.FullLoader)
 
 
+def save_settings(settings_to_save):
+    with open("data/site_settings.yaml", "w", encoding="utf-8") as j:
+        yaml.dump(settings_to_save, j, allow_unicode=True)
+
+
 def site_settings():
     global settings
     if conf.dynamically_reload_site_settings:
