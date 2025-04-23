@@ -38,25 +38,10 @@ def render_list(current=None):
 def admin_home():
     if not ip_filter.is_admin(request)[0]:
         return abort(404)
-    admin_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    admin_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_main_content.html')
-
-    arg = {
-        "{entry_content}": admin_content,
-        "{entry_list}": render_list(),
-        "{ip}": request.remote_addr
-    }
-    admin_html = renderer.fill_args(admin_html, arg)
-
-    return renderer.render_mainpage(admin_html, "admin", "diary")
-
-
-@app.route('/admin/content/settings')
-def admin_settings_general():
-    if not ip_filter.is_admin(request)[0]:
+    if not site_settings()["use_admin"]:
         return abort(404)
     admin_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    admin_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_settings_general.html')
+    admin_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_main_content.html')
 
     arg = {
         "{entry_content}": admin_content,
