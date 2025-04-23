@@ -1,0 +1,27 @@
+        <div class="entry_content">
+            <h2>바이오</h2>
+            <b>좌측에 표시되는 프로필 사진, 오늘의 기분, 소개글을 설정합니다.</b>
+            <form action="/admin/content/bio/post_profile_pic" method="post" enctype="multipart/form-data">
+                <h3>프로필 사진</h3>
+                <img src="/img/icon.png" width="120" height="120" border="0">
+                <ul>
+                    <li><div class="tooltip">
+                        <span class="tooltiptext tooltip-top">120x120 이상의 사진을 권장합니다.</span>
+                        프로필 사진 : <input type="file" name="file" multiple accept="image/*">
+                    </div></li>
+                </ul>
+                <input type="submit" value="업로드">
+            </form>
+            <form action="/admin/content/bio/post" method="post">
+                <h3>프로필</h3>
+                <ul>
+                    <li>오늘의 기분 : <input type="text" name="todays_feeling" value="{todays_feeling}"></li>
+                    <li><div class="tooltip">
+                        <span class="tooltiptext tooltip-top">HTML 태그를 사용할 수 있습니다.</span>
+                        소개글 :<br>
+                        <textarea name="bio" rows="4" cols="24">{bio}</textarea>
+                    </div></li>
+                </ul>
+                <input type="submit" value="저장">
+            </form>
+        </div><br>

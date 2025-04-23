@@ -6,6 +6,7 @@ from flask import request, abort
 
 def render_list(current=None):
     cms_lst = [
+        ["미디어 관리", "media"],
         ["기본 설정", "settings"],
         ["바이오", "bio"],
         ["하단 바", "footer"],
