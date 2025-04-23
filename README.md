@@ -85,6 +85,7 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
   - [ ] 커스텀 탭
   - [ ] 개발자
 ### 만들 것들 (후순위)
+- [ ] HTML 에디터로 Monaco Editor 사용
 - [ ] 쥬크박스
 - [ ] 일촌평
 - [ ] 자체 방명록
