@@ -1,2 +1,2 @@
-VERSION = "r2p0-beta"
+VERSION = "1.0.0"
 FMT_VER = 200

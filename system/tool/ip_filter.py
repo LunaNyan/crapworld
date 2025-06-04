@@ -24,5 +24,11 @@ def is_admin(req: request):
             return True, ip
         else:
             return False, ip
+    elif ip.startswith("100."):
+        ip2 = int(ip.split(".")[1])
+        if 64 <= ip2 <= 127:
+            return True, ip
+        else:
+            return False, ip
     else:
         return False, ip

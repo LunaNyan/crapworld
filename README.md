@@ -81,9 +81,9 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
   - [ ] 미디어 관리자 
   - [x] 기본 설정
   - [x] 바이오
-  - [ ] 하단 바
-  - [ ] 파도타기
-  - [ ] 커스텀 탭
+  - [x] 하단 바
+  - [x] 파도타기
+  - [x] 커스텀 탭
   - [ ] 개발자
 ### 만들 것들 (후순위)
 - [ ] HTML 에디터로 Monaco Editor 사용
