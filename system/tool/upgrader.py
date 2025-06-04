@@ -7,6 +7,27 @@ import sys
 # ===== Upgrade =====
 
 
+# 200 → 10000
+def do_upgrade_200_to_10000():
+    site_settings_append = """
+# ===== 1.0.0 =====
+# 관리자 탭을 표시할지의 여부
+show_admin_tab: true
+"""
+    log.info("automatically editing site_settings.yaml")
+
+    fr = open("data/site_settings.yaml", "r", encoding="utf-8")
+    f = fr.read() + "\n" + site_settings_append
+    fr.close()
+    f = f.replace("fmt_ver: 200", "fmt_ver: 10000")
+
+    fw = open("data/site_settings.yaml", "w", encoding="utf-8")
+    fw.write(f)
+    fw.close()
+
+    log.info("upgrade fmt_ver 200 to 10000 complete.")
+
+
 # 102 → 200
 def do_upgrade_102_to_200():
     site_settings_append = """
@@ -52,7 +73,8 @@ photo_thumbnail_size: 300
 
 
 upgrade_steps = {100: do_upgrade_100_to_102,
-                 102: do_upgrade_102_to_200}
+                 102: do_upgrade_102_to_200,
+                 200: do_upgrade_200_to_10000}
 
 # ===================
 

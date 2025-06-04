@@ -70,7 +70,7 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         tab_items += render_tab(i["url"], i["name"], False)
     if conf.debug:
         tab_items += render_tab("/debug", "디버그", tab_selected == "debug")
-    if is_admin(request)[0]:
+    if is_admin(request)[0] and site_settings()['show_admin_tab']:
         tab_items += render_tab("/admin", "관리자", tab_selected == "admin")
     tab_html = tab_html.replace("{menu_items}", tab_items)
 

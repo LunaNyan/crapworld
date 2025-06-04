@@ -39,6 +39,7 @@ def admin_settings_general_post():
     settings_to_save["guest_ap_id"] = request.form.get('guest_ap_id')
     settings_to_save["photo_use_thumbnail"] = request.form.get('photo_use_thumbnail')
     settings_to_save["photo_thumbnail_size"] = int(request.form.get('photo_thumbnail_size'))
+    settings_to_save["show_admin_tab"] = request.form.get('show_admin_tab')
 
     save_settings(settings_to_save)
     return redirect(location=f"/admin/content/settings")
@@ -95,6 +96,7 @@ def admin_settings_general():
         "{twitter}": " checked" if site_settings()["gallery_sns_type"] == "twitter" else "",
         "{gallery_sns_id}": site_settings()["gallery_sns_id"],
         "{guest_ap_id}": site_settings()["guest_ap_id"],
+        "{show_admin_tab}": " checked" if site_settings()["show_admin_tab"] else ""
     }
     admin_html = renderer.fill_args(admin_html, arg)
 
