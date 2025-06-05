@@ -40,12 +40,12 @@ def add_category(name, display_name, unlisted=False):
 
 def upload_pic(request, filename):
     file = request.files['file']
-    file.save("cache/profile_pic")
+    file.save("cache/photo_upload")
 
-    im = Image.open("cache/profile_pic")
+    im = Image.open("cache/photo_upload")
     im.save(f'data/img/{filename}.png')
 
-    os.remove("cache/profile_pic")
+    os.remove("cache/photo_upload")
 
 
 def add_entry(category, name, description):

@@ -1,0 +1,12 @@
+        <div class="entry_content">
+            <h2>미디어 관리</h2>
+            <b>data/img에 업로드된 파일을 관리합니다.</b>
+            <h3>업로드</h3>
+            <form action="/admin/content/media" method="post" enctype="multipart/form-data">
+                파일 : <input type="file" name="file" multiple accept="image/*"> <input type="submit" value="업로드">
+            </form>
+            <h3>저장된 미디어</h3>
+            {media_list}
+            <br>
+            {page}
+        </div><br>
