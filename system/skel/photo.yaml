@@ -4,5 +4,7 @@
   display_name: 기본
   unlisted: false  # 카테고리 목록에서 숨길지의 여부 (URL을 알고 있으면 접근 가능)
   photos:
-    - path: /img/sample_img.png
+    - name: sample_img
+      path: /img/sample_img.png
       description: data/photo.yaml을 참조해 주세요.
+      uploaded_at: 1749082389
