@@ -1,7 +1,7 @@
 from system.appinfo import VERSION
 from system.engine.settings import site_settings
 from system.tool.etc import cnv_path
-from system.tool.ip_filter import is_admin
+from system.tool.auth import is_admin
 from flask import request
 import conf
 
@@ -14,6 +14,12 @@ def get_html_file(filename, auto_br=False):
         index_html = index_html.replace("\n", "<br>")
     ff.close()
     return index_html
+
+
+def load_html_shard(filename):
+    ff = open(cnv_path(f'theme/{site_settings()["theme"]}/html/{filename}.html'), 'r', encoding='utf-8')
+    html = ff.read()
+    return html
 
 
 def fill_args(orig: str, arg: dict):
@@ -35,7 +41,7 @@ def render_tab(link: str, tab_name: str, selected: bool):
         "{tab_name}": tab_name,
         "{class_type}": "tab_selected" if selected else "tab"
     }
-    menu_item = get_html_file(f'theme/{site_settings()["theme"]}/html/menu_tab.html')
+    menu_item = load_html_shard('common/menu_tab')
     menu_item = fill_args(menu_item, fill_arg)
     return menu_item
 
@@ -47,10 +53,10 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
     content (str) : 페이지에 삽입될 메인 컨텐츠 HTML
     tab_selected (str) : 선택되었다고 표시할 탭의 변수명
     """
-    index_html = get_html_file(f'theme/{site_settings()["theme"]}/html/index.html')
+    index_html = load_html_shard("common/index")
 
     # ===== 탭 만들기 =====
-    tab_html = get_html_file(f'theme/{site_settings()["theme"]}/html/menu.html')
+    tab_html = load_html_shard("common/menu")
     # 구현된 기능에 대한 탭
     tab_items = render_tab("/", site_settings()["home_tab_name"], tab_selected == "home")
     if site_settings()["use_profile"]:
@@ -77,10 +83,10 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
     # ===== 드롭다운 메뉴 만들기 =====
     if enable_dropdown and site_settings()["use_dropdown"]:
         # 드롭다운 메뉴 제작에 필요한 HTML을 로드한다.
-        drop_html = get_html_file(f'theme/{site_settings()["theme"]}/html/dropdown.html')
-        drop_items = get_html_file(f'theme/{site_settings()["theme"]}/html/dropdown_name.html')
+        drop_html = load_html_shard("dropdown/main")
+        drop_items = load_html_shard("dropdown/name")
         drop_items = drop_items.replace("{name}", site_settings()["dropdown_name"])
-        drop_item_ind = get_html_file(f'theme/{site_settings()["theme"]}/html/dropdown_item.html')
+        drop_item_ind = load_html_shard("dropdown/item")
         # 드롭다운 아이템 제작
         for i in site_settings()["dropdown_items"]:
             drop_arg = {
@@ -92,7 +98,7 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
         # 드롭다운 메뉴 HTML에 넣는다.
         drop_html = drop_html.replace("{dropdown_menus}", drop_items)
     else:
-        drop_html = get_html_file(f'theme/{site_settings()["theme"]}/html/dropdown_placeholder.html')
+        drop_html = load_html_shard("dropdown/placeholder")
 
     # ===== 하단 링크 만들기 =====
     footer_links = ""

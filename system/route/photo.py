@@ -1,7 +1,7 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool.ip_filter import is_admin
-from system.tool import renderer
+from system.tool.auth import is_admin
+from system.tool.renderer import load_html_shard, fill_args, render_mainpage
 from system.object.photo import render_list, get_list, get_entry
 from datetime import datetime
 from flask import abort, request
@@ -11,17 +11,17 @@ from flask import abort, request
 def photo_main():
     if not site_settings()["use_profile"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    placeholder_info = load_html_shard('photo/content_placeholder')
+    placeholder_no_entry = load_html_shard('photo/content_no_entry')
+    diary_main = load_html_shard('diary/main')
 
     category_list = get_list()
 
     arg = {"{entry_list}": render_list(category_list),
            "{entry_content}": placeholder_no_entry if len(category_list) == 0 else placeholder_info}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
-    return renderer.render_mainpage(diary_main, "photo", "photo")
+    return render_mainpage(diary_main, "photo", "photo")
 
 
 @app.route('/photo/<category>/<photo_name>')
@@ -31,9 +31,9 @@ def photo_detail(category, photo_name):
     if ".." in category:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    photo_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_detail.html')
-    photo_manage = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_manage.html')
+    diary_main = load_html_shard('diary/main')
+    photo_content = load_html_shard('photo/detail')
+    photo_manage = load_html_shard('photo/manage')
 
     # load data
     try:
@@ -59,10 +59,10 @@ def photo_detail(category, photo_name):
            "{uploaded_at}": dt,
            "{category}": category,
            "{filename}": photo_name}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "photo", "diary")
+    return render_mainpage(diary_main, "photo", "diary")
 
 
 @app.route('/photo/<category>')
@@ -72,12 +72,12 @@ def photo_category(category):
     if ".." in category:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    diary_main = load_html_shard('diary/main')
 
     # ===== Content =====
     main_content = ""
-    photo_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_entry.html')
-    photo_new = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_new.html')
+    photo_content = load_html_shard('photo/entry')
+    photo_new = load_html_shard('photo/new')
 
     # load data
     d = get_list()
@@ -87,19 +87,19 @@ def photo_category(category):
                    "{thumbnail_path}": "/thumbnail/" + photo.thumbnail_path,
                    "{img_name}": f"/photo/{category}/{photo.name}",
                    "{description}": photo.description}
-            main_content += renderer.fill_args(photo_content, arg)
+            main_content += fill_args(photo_content, arg)
     except KeyError:
         return abort(404)
 
     if is_admin(request)[0]:
         arg = {"{category}": category}
-        main_content += renderer.fill_args(photo_new, arg)
+        main_content += fill_args(photo_new, arg)
 
     # ===== Diary List =====
     profile_list = get_list()
     arg = {"{entry_list}": render_list(profile_list, category),
            "{entry_content}": main_content}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "photo", "photo")
+    return render_mainpage(diary_main, "photo", "photo")

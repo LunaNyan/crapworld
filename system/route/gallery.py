@@ -1,6 +1,6 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool import renderer
+from system.tool.renderer import load_html_shard, get_html_file, fill_args, render_mainpage
 from flask import abort
 import yaml
 
@@ -9,11 +9,11 @@ import yaml
 def gallery():
     if not site_settings()["use_gallery"]:
         return abort(404)
-    home_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/home.html')
-    home_bio = renderer.get_html_file('data/bio.html')
+    home_html = load_html_shard('common/home')
+    home_bio = get_html_file('data/bio.html')
     sns_type = site_settings()["gallery_sns_type"]
-    gallery_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/gallery_{sns_type}.html')
-    gallery_content = renderer.fill_args(gallery_content,
+    gallery_content = load_html_shard(f'etc/gallery_{sns_type}')
+    gallery_content = fill_args(gallery_content,
                                          {"{sns_id}": site_settings()["gallery_sns_id"]})
 
     with open("data/todays_feeling.yaml", "r", encoding="utf-8") as j:
@@ -26,6 +26,6 @@ def gallery():
         "{home_content}": gallery_content,
         "{bio}": home_bio
     }
-    home_html = renderer.fill_args(home_html, arg)
+    home_html = fill_args(home_html, arg)
 
-    return renderer.render_mainpage(home_html, "gallery", "gallery")
+    return render_mainpage(home_html, "gallery", "gallery")

@@ -1,6 +1,7 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool import renderer, ip_filter
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
+from system.tool.auth import is_admin
 from flask import request, abort
 
 
@@ -14,11 +15,10 @@ def render_list(current=None):
         ["커스텀 탭", "custom_tab"],
         ["고급", "advanced"]
     ]
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/admin_content_list_item.html")
-    html_list_item_cur = renderer.get_html_file(
-            f"theme/{site_settings()['theme']}/html/admin_content_list_item_selected.html")
+    html_delimiter = load_html_shard("diary/delimiter")
+    html_delimiter_end = load_html_shard("diary/delimiter_end")
+    html_list_item = load_html_shard("admin/content_list_item")
+    html_list_item_cur = load_html_shard("admin/content_list_item_selected")
     ht = ""
 
     ht += html_delimiter_end
@@ -37,18 +37,18 @@ def render_list(current=None):
 
 @app.route('/admin')
 def admin_home():
-    if not ip_filter.is_admin(request)[0]:
+    if not is_admin(request)[0]:
         return abort(404)
     if not site_settings()["use_admin"]:
         return abort(404)
-    admin_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    admin_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_main_content.html')
+    admin_html = load_html_shard('diary/main')
+    admin_content = load_html_shard('admin/main_content')
 
     arg = {
         "{entry_content}": admin_content,
         "{entry_list}": render_list(),
         "{ip}": request.remote_addr
     }
-    admin_html = renderer.fill_args(admin_html, arg)
+    admin_html = fill_args(admin_html, arg)
 
-    return renderer.render_mainpage(admin_html, "admin", "diary")
+    return render_mainpage(admin_html, "admin", "diary")

@@ -1,6 +1,6 @@
 from system.tool.etc import cnv_path
-from system.tool.ip_filter import is_admin
-from system.tool import renderer
+from system.tool.auth import is_admin
+from system.tool.renderer import load_html_shard
 from system.engine.settings import site_settings
 from flask import request
 from os import listdir, remove
@@ -67,10 +67,10 @@ def remove_entry(fname):
 
 
 def render_list(profile_list: list[ProfileEntry], current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/profile_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/profile_list_item_current.html")
+    html_delimiter = load_html_shard("diary/delimiter")
+    html_delimiter_end = load_html_shard("diary/delimiter_end")
+    html_list_item = load_html_shard("profile/list_item")
+    html_list_item_cur = load_html_shard("profile/list_item_current")
     ht = html_delimiter.replace("{group_title}", site_settings()["profile_header_name"])
     for i in profile_list:
         # 지금 보고있는 엔트리인가?

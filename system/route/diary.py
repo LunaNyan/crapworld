@@ -1,7 +1,7 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool import renderer
-from system.tool.ip_filter import is_admin
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
+from system.tool.auth import is_admin
 from system.object.diary import render_list, get_entry, get_list
 from datetime import datetime
 from flask import abort, request
@@ -11,17 +11,17 @@ from flask import abort, request
 def diary_home():
     if not site_settings()["use_diary"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    placeholder_info = load_html_shard('diary/content_placeholder')
+    placeholder_no_entry = load_html_shard('diary/content_no_entry')
+    diary_main = load_html_shard('diary/main')
 
     diary_list = get_list()
 
     arg = {"{entry_list}": render_list(diary_list),
            "{entry_content}": placeholder_no_entry if len(diary_list) == 0 else placeholder_info}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
-    return renderer.render_mainpage(diary_main, "diary", "diary")
+    return render_mainpage(diary_main, "diary", "diary")
 
 
 @app.route('/diary/<entry>')
@@ -38,8 +38,8 @@ def diary_entry(entry):
     except FileNotFoundError:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    diary_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_content.html')
+    diary_main = load_html_shard('diary/main')
+    diary_content = load_html_shard('diary/content')
 
     # written_at
     dt = datetime.fromtimestamp(d.written_at).strftime('%x(%a) %X')
@@ -52,11 +52,11 @@ def diary_entry(entry):
         "{written_at}": dt + ('<br>미공개' if d.unlisted else ''),
         "{entry_content}": d.content
     }
-    diary_content = renderer.fill_args(diary_content, arg)
+    diary_content = fill_args(diary_content, arg)
 
     # ===== Admin Context =====
     if is_admin(request)[0]:
-        manage = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_manage.html')
+        manage = load_html_shard('diary/manage')
         manage = manage.replace("{filename}", entry)
         diary_content += manage
 
@@ -64,7 +64,7 @@ def diary_entry(entry):
     diary_list = get_list()
     arg = {"{entry_list}": render_list(diary_list, entry),
            "{entry_content}": diary_content}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "diary", "diary")
+    return render_mainpage(diary_main, "diary", "diary")

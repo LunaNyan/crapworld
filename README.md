@@ -101,6 +101,7 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
 ### 만들 것들 (후순위)
 - [ ] HTML 에디터로 Monaco Editor 사용
 - [ ] Markdown 지원
+- [ ] REST API 지원
 - [ ] 쥬크박스
 - [ ] 일촌평
 - [ ] 자체 방명록

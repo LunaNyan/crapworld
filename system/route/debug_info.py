@@ -2,7 +2,7 @@ from system.engine.server import app
 from system.engine.log_manager import logger as log
 from system.engine.mgmt import BOOT_AT
 from system.engine.settings import site_settings
-from system.tool import renderer
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
 from system.appinfo import VERSION
 from datetime import datetime
 import flask
@@ -28,7 +28,7 @@ except git.exc.NoSuchPathError:
 def debug_info():
     if not conf.debug:
         return flask.abort(404)
-    home_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/debug_info.html')
+    home_html = load_html_shard('etc/debug_info')
     home_content = f"""
     <b>conf.py의 debug가 True입니다.</b><br>
     프로덕션으로 구동할 경우 반드시 False로 변경해 주세요.<br><br>
@@ -47,7 +47,6 @@ def debug_info():
         "{home_content}": home_content,
         "{bio}": ""
     }
-    home_html = renderer.fill_args(home_html, arg)
+    home_html = fill_args(home_html, arg)
 
-    return renderer.render_mainpage(home_html, "debug", "debug_info",
-                                    enable_dropdown=False)
+    return render_mainpage(home_html, "debug", "debug_info", enable_dropdown=False)

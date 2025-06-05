@@ -1,15 +1,15 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool import renderer
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
 from system.object.video import get_list, get_entry
 from flask import abort
 
 
 def render_list(current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/video_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/video_list_item_current.html")
+    html_delimiter = load_html_shard("diary/delimiter")
+    html_delimiter_end = load_html_shard("diary/delimiter_end")
+    html_list_item = load_html_shard("video/list_item")
+    html_list_item_cur = load_html_shard("video/list_item_current")
     ht = ""
     video_category = get_list()
     for n, i in enumerate(video_category):
@@ -35,17 +35,17 @@ def render_list(current=None):
 def video_home():
     if not site_settings()["use_video"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/video_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/video_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    placeholder_info = load_html_shard('video/content_placeholder')
+    placeholder_no_entry = load_html_shard('video/content_no_entry')
+    diary_main = load_html_shard('diary/main')
 
     diary_list = get_list()
 
     arg = {"{entry_list}": render_list(diary_list),
            "{entry_content}": placeholder_no_entry if len(diary_list) == 0 else placeholder_info}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
-    return renderer.render_mainpage(diary_main, "video", "video")
+    return render_mainpage(diary_main, "video", "video")
 
 
 @app.route('/video/<entry>')
@@ -60,19 +60,19 @@ def video_entry(entry):
     except IndexError:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    video_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/video_entry.html')
+    diary_main = load_html_shard('diary/main')
+    video_content = load_html_shard('video/entry')
 
     # ===== Content =====
     arg = {"{title}": display_name,
            "{youtube_path}": youtube_path,
            "{description}": description}
-    video_content = renderer.fill_args(video_content, arg)
+    video_content = fill_args(video_content, arg)
 
     # ===== Diary List =====
     arg = {"{entry_list}": render_list(entry),
            "{entry_content}": video_content}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "video", "video")
+    return render_mainpage(diary_main, "video", "video")

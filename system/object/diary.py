@@ -1,6 +1,5 @@
-from system.engine.settings import site_settings
-from system.tool.ip_filter import is_admin
-from system.tool import renderer
+from system.tool.auth import is_admin
+from system.tool.renderer import load_html_shard
 from system.tool.etc import cnv_path
 from os import listdir, remove
 from datetime import datetime
@@ -79,12 +78,23 @@ def remove_entry(fname):
 
 
 def render_list(diary_list: list[DiaryEntry], current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_list_item_current.html")
+    html_delimiter = load_html_shard("diary/delimiter")
+    html_delimiter_end = load_html_shard("diary/delimiter_end")
+    html_list_item = load_html_shard("diary/list_item")
+    html_list_item_cur = load_html_shard("diary/list_item_current")
     prev_month = 0
     ht = ""
+    # admin인 경우 새로 만들 수 있음
+    if is_admin(request)[0]:
+        ht += html_delimiter.replace("{group_title}", "")
+        if current == "add_item":
+            ht2 = html_list_item_cur.replace('{day} | <b>{title}</b>', "<b>새로 만들기</b>")
+            ht2 = ht2.replace('{filename}', 'add_item')
+        else:
+            ht2 = html_list_item.replace('{day} | {title}', "<b>새로 만들기</b>")
+            ht2 = ht2.replace('{filename}', 'add_item')
+        ht += ht2
+        ht += html_delimiter_end
     for i in diary_list:
         dt = datetime.fromtimestamp(i.written_at)
         # 월자가 바뀐 경우 delimiter를 넣는다.
@@ -100,14 +110,5 @@ def render_list(diary_list: list[DiaryEntry], current=None):
             ht2 = ht2.replace('{filename}', i.filename)
         ht += ht2.replace('{day}', str(dt.day))
         prev_month = dt.month
-    # admin인 경우 새로 만들 수 있음
-    if is_admin(request)[0]:
-        if current == "add_item":
-            ht2 = html_list_item_cur.replace('{day} | <b>{title}</b>', "<b>새로 만들기</b>")
-            ht2 = ht2.replace('{filename}', 'add_item')
-        else:
-            ht2 = html_list_item.replace('{day} | {title}', "<b>새로 만들기</b>")
-            ht2 = ht2.replace('{filename}', 'add_item')
-        ht += ht2
     ht += html_delimiter_end
     return ht

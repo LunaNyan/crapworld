@@ -1,7 +1,7 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool.ip_filter import is_admin
-from system.tool import renderer
+from system.tool.auth import is_admin
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
 from system.object.photo import render_list, get_list, get_entry, add_category, upload_pic, add_entry, remove_entry
 from flask import abort, request, redirect
 from uuid import uuid4
@@ -30,16 +30,16 @@ def photo_add_category():
     if not site_settings()["use_photo"]:
         return abort(404)
 
-    form = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_add_category.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    form = load_html_shard('photo/add_category')
+    diary_main = load_html_shard('diary/main')
 
     category_list = get_list()
 
     arg = {"{entry_list}": render_list(category_list, "add_item"),
            "{entry_content}": form}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
-    return renderer.render_mainpage(diary_main, "photo", "diary")
+    return render_mainpage(diary_main, "photo", "diary")
 
 
 @app.route('/photo/<category>/add_item', methods=['POST'])
@@ -67,17 +67,17 @@ def photo_add_item(category):
     if not site_settings()["use_photo"]:
         return abort(404)
 
-    form = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_add_item.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    form = load_html_shard('photo/add_item')
+    diary_main = load_html_shard('diary/main')
 
     category_list = get_list()
 
     arg = {"{entry_list}": render_list(category_list, category),
            "{entry_content}": form,
            "{category}": category}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
-    return renderer.render_mainpage(diary_main, "photo", "diary")
+    return render_mainpage(diary_main, "photo", "diary")
 
 
 @app.route('/photo/<category>/<photo_name>/confirm_remove')
@@ -99,8 +99,8 @@ def photo_remove(category, photo_name):
     if not site_settings()["use_photo"]:
         return abort(404)
 
-    form = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_confirm_remove.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    form = load_html_shard('photo/confirm_remove')
+    diary_main = load_html_shard('diary/main')
 
     category_list = get_list()
 
@@ -109,6 +109,6 @@ def photo_remove(category, photo_name):
            "{category}": category,
            "{name}": photo_name,
            "{photo_path}": get_entry(category, photo_name).path}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
-    return renderer.render_mainpage(diary_main, "photo", "diary")
+    return render_mainpage(diary_main, "photo", "diary")

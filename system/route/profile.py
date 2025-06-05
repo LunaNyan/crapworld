@@ -1,7 +1,7 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool import renderer
-from system.tool.ip_filter import is_admin
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
+from system.tool.auth import is_admin
 from system.object.profile import render_list, get_entry, get_list
 from flask import abort, request
 
@@ -10,17 +10,17 @@ from flask import abort, request
 def profile_home():
     if not site_settings()["use_profile"]:
         return abort(404)
-    placeholder_info = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_content_placeholder.html')
-    placeholder_no_entry = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_content_no_entry.html')
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
+    placeholder_info = load_html_shard('profile/content_placeholder')
+    placeholder_no_entry = load_html_shard('profile/content_no_entry')
+    diary_main = load_html_shard('diary/main')
 
     diary_list = get_list()
 
     arg = {"{entry_list}": render_list(diary_list),
            "{entry_content}": placeholder_no_entry if len(diary_list) == 0 else placeholder_info}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
-    return renderer.render_mainpage(diary_main, "profile", "diary")
+    return render_mainpage(diary_main, "profile", "diary")
 
 
 # 프로필 보기
@@ -38,15 +38,15 @@ def profile_entry(entry):
     except FileNotFoundError:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_content.html')
+    diary_main = load_html_shard('diary/main')
+    profile_content = load_html_shard('profile/content')
 
     # ===== Content =====
-    profile_content = renderer.fill_args(profile_content, {"{entry_content}": d.content})
+    profile_content = fill_args(profile_content, {"{entry_content}": d.content})
 
     # ===== Admin Context =====
     if is_admin(request)[0]:
-        manage = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/profile_manage.html')
+        manage = load_html_shard('profile/manage')
         manage = manage.replace("{filename}", entry)
         profile_content += manage
 
@@ -54,7 +54,7 @@ def profile_entry(entry):
     profile_list = get_list()
     arg = {"{entry_list}": render_list(profile_list, entry),
            "{entry_content}": profile_content}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "profile", "diary")
+    return render_mainpage(diary_main, "profile", "diary")

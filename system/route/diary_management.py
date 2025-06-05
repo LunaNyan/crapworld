@@ -1,11 +1,12 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
-from system.tool import renderer
-from system.tool.ip_filter import is_admin
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
+from system.tool.auth import is_admin
 from system.object.diary import (
     DiaryEntry, render_list, get_entry, get_list, remove_entry, add_entry)
 from flask import abort, request, redirect
 from datetime import datetime
+from uuid import uuid4
 
 
 # 프로필 추가 요청 POST에 대한 처리
@@ -18,6 +19,10 @@ def diary_post():
 
     title = request.form['title']
     filename = request.form['filename']
+
+    if filename == "":
+        filename = str(uuid4())
+
     content = request.form['content']
     is_unlisted = request.form.get('unlisted')
     is_auto_wrap = request.form.get('auto_wrap')
@@ -32,7 +37,7 @@ def diary_post():
     )
 
     add_entry(entry)
-    return redirect(location=f"/profile/{filename}")
+    return redirect(location=f"/diary/{filename}")
 
 
 # 수정하기
@@ -43,8 +48,8 @@ def diary_edit(entry):
     if not site_settings()["use_diary"]:  # use_profile이 false인 경우
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_editor.html')
+    diary_main = load_html_shard('diary/main')
+    profile_content = load_html_shard('diary/editor')
 
     curr_entry = get_entry(entry)
 
@@ -56,16 +61,16 @@ def diary_edit(entry):
         "{auto_wrap_is_checked}": " checked" if curr_entry.auto_wrap else "",
         "{unlisted_is_checked}": " checked" if curr_entry.unlisted else ""
     }
-    profile_content = renderer.fill_args(profile_content, args)
+    profile_content = fill_args(profile_content, args)
 
     # ===== Diary List =====
     profile_list = get_list()
     arg = {"{entry_list}": render_list(profile_list, "add_item"),
            "{entry_content}": profile_content}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "profile", "diary")
+    return render_mainpage(diary_main, "profile", "diary")
 
 
 # 새로 만들기
@@ -76,8 +81,8 @@ def diary_add():
     if not site_settings()["use_diary"]:  # use_profile이 false인 경우
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_editor.html')
+    diary_main = load_html_shard('diary/main')
+    profile_content = load_html_shard('diary/editor')
 
     args = {
         "{page_title}": "새로 만들기",
@@ -87,16 +92,16 @@ def diary_add():
         "{auto_wrap_is_checked}": "",
         "{unlisted_is_checked}": ""
     }
-    profile_content = renderer.fill_args(profile_content, args)
+    profile_content = fill_args(profile_content, args)
 
     # ===== Diary List =====
     profile_list = get_list()
     arg = {"{entry_list}": render_list(profile_list, "add_item"),
            "{entry_content}": profile_content}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "diary", "diary")
+    return render_mainpage(diary_main, "diary", "diary")
 
 
 # 프로필 삭제하기 전 질문
@@ -115,19 +120,19 @@ def diary_confirm_remove(entry):
     except FileNotFoundError:
         return abort(404)
 
-    diary_main = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    profile_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_confirm_remove.html')
+    diary_main = load_html_shard('diary/main')
+    profile_content = load_html_shard('diary/confirm_remove')
 
     # ===== Content =====
     args = {
         "{title}": d.title,
         "{filename}": d.filename
     }
-    content = renderer.fill_args(profile_content, args)
+    content = fill_args(profile_content, args)
 
     # ===== Admin Context =====
     if is_admin(request)[0]:
-        manage = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_manage.html')
+        manage = load_html_shard('diary/manage')
         manage = manage.replace("{filename}", entry)
         profile_content += manage
 
@@ -135,10 +140,10 @@ def diary_confirm_remove(entry):
     profile_list = get_list()
     arg = {"{entry_list}": render_list(profile_list, entry),
            "{entry_content}": content}
-    diary_main = renderer.fill_args(diary_main, arg)
+    diary_main = fill_args(diary_main, arg)
 
     # ===== make main html =====
-    return renderer.render_mainpage(diary_main, "diary", "diary")
+    return render_mainpage(diary_main, "diary", "diary")
 
 
 # 삭제

@@ -1,6 +1,7 @@
 from system.engine.server import app
 from system.engine.settings import site_settings, save_settings
-from system.tool import renderer, ip_filter
+from system.tool.renderer import load_html_shard, render_mainpage, fill_args
+from system.tool.auth import is_admin
 from system.route.admin import render_list
 from flask import request, abort, redirect
 from os import listdir
@@ -9,7 +10,7 @@ from os.path import isdir
 
 @app.route('/admin/content/footer/post', methods=['POST'])
 def admin_settings_footer_post():
-    if not ip_filter.is_admin(request)[0]:
+    if not is_admin(request)[0]:
         return abort(404)
     if not site_settings()["use_admin"]:
         return abort(404)
@@ -33,13 +34,13 @@ def admin_settings_footer_post():
 
 @app.route('/admin/content/footer')
 def admin_settings_footer():
-    if not ip_filter.is_admin(request)[0]:
+    if not is_admin(request)[0]:
         return abort(404)
     if not site_settings()["use_admin"]:
         return abort(404)
 
-    admin_html = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_main.html')
-    admin_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/admin_settings_footer.html')
+    admin_html = load_html_shard('diary/main')
+    admin_content = load_html_shard('admin/settings_footer')
 
     # themes list
     themes = ""
@@ -61,6 +62,6 @@ def admin_settings_footer():
         # 기본 설정
         "{footer_content}": links_t
     }
-    admin_html = renderer.fill_args(admin_html, arg)
+    admin_html = fill_args(admin_html, arg)
 
-    return renderer.render_mainpage(admin_html, "admin", "diary")
+    return render_mainpage(admin_html, "admin", "diary")

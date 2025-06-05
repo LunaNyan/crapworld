@@ -1,6 +1,6 @@
 from system.engine.settings import site_settings
-from system.tool import renderer
-from system.tool.ip_filter import is_admin
+from system.tool.renderer import load_html_shard
+from system.tool.auth import is_admin
 from system.tool.etc import cnv_path
 from flask import request
 from datetime import datetime
@@ -184,10 +184,10 @@ def make_thumbnail(fpath, ysize):
 
 
 def render_list(category_list: dict[PhotoCategory], current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item_current.html")
+    html_delimiter = load_html_shard("diary/delimiter")
+    html_delimiter_end = load_html_shard("diary/delimiter_end")
+    html_list_item = load_html_shard("photo/list_item")
+    html_list_item_cur = load_html_shard("photo/list_item_current")
     ht = html_delimiter.replace("{group_title}", "카테고리")
     for name, cat in category_list.items():
         # 지금 보고있는 엔트리인가?
