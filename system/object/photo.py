@@ -1,8 +1,13 @@
 from system.engine.settings import site_settings
+from system.tool import renderer
+from system.tool.ip_filter import is_admin
 from system.tool.etc import cnv_path
+from flask import request
+from datetime import datetime
 from PIL import Image
 import uuid
 import yaml
+import os
 
 
 class Photo:
@@ -19,6 +24,56 @@ class PhotoCategory:
         self.display_name = display_name
         self.unlisted = unlisted
         self.photos = photos
+
+
+def add_category(name, display_name, unlisted=False):
+    # load photo.yaml
+    with open(cnv_path("data/photo.yaml"), "r", encoding="utf-8") as f:
+        d = yaml.load(f, yaml.FullLoader)
+
+    d.append({"name": name, "display_name": display_name, "unlisted": unlisted, "photos": []})
+
+    # save
+    with open("data/photo.yaml", "w", encoding="utf-8") as j:
+        yaml.dump(d, j, allow_unicode=True)
+
+
+def upload_pic(request, filename):
+    file = request.files['file']
+    file.save("cache/profile_pic")
+
+    im = Image.open("cache/profile_pic")
+    im.save(f'data/img/{filename}.png')
+
+    os.remove("cache/profile_pic")
+
+
+def add_entry(category, name, description):
+    # load photo.yaml
+    with open(cnv_path("data/photo.yaml"), "r", encoding="utf-8") as f:
+        d = yaml.load(f, yaml.FullLoader)
+
+    cat = None
+    catn = 0
+    for n, i in enumerate(d):
+        if i["name"] == category:
+            cat = i
+            catn = n
+    if cat is None:
+        raise KeyError
+
+    cat["photos"].append({
+        "description": description,
+        "name": name,
+        "path": f"/img/{name}.png",
+        "uploaded_at": datetime.now().timestamp()
+    })
+
+    d[catn]["photos"] = cat["photos"]
+
+    # save
+    with open("data/photo.yaml", "w", encoding="utf-8") as j:
+        yaml.dump(d, j, allow_unicode=True)
 
 
 def get_entry(category, img_name):
@@ -99,3 +154,30 @@ def make_thumbnail(fpath, ysize):
     u = str(uuid.uuid4()) + "." + fpath.split(".")[-1]
     img.save(cnv_path("cache/image_thumbnail/" + u))
     return u
+
+
+def render_list(category_list: dict[PhotoCategory], current=None):
+    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
+    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
+    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item.html")
+    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item_current.html")
+    ht = html_delimiter.replace("{group_title}", "카테고리")
+    for name, cat in category_list.items():
+        # 지금 보고있는 엔트리인가?
+        if name == current:
+            ht2 = html_list_item_cur.replace('{title}', cat.display_name)
+        else:
+            ht2 = html_list_item.replace('{title}', cat.display_name)
+            ht2 = ht2.replace('{filename}', name)
+        ht += ht2
+    # admin인 경우 새로 만들 수 있음
+    if is_admin(request)[0]:
+        if current == "add_item":
+            ht2 = html_list_item_cur.replace('{title}', "<b>새로 만들기</b>")
+            ht2 = ht2.replace('{filename}', 'add_category')
+        else:
+            ht2 = html_list_item.replace('{title}', "<b>새로 만들기</b>")
+            ht2 = ht2.replace('{filename}', 'add_category')
+        ht += ht2
+    ht += html_delimiter_end
+    return ht

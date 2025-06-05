@@ -2,27 +2,9 @@ from system.engine.server import app
 from system.engine.settings import site_settings
 from system.tool.ip_filter import is_admin
 from system.tool import renderer
-from system.object.photo import PhotoCategory, get_list, get_entry
+from system.object.photo import render_list, get_list, get_entry
 from datetime import datetime
 from flask import abort, request
-
-
-def render_list(category_list: dict[PhotoCategory], current=None):
-    html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
-    html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")
-    html_list_item = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item.html")
-    html_list_item_cur = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/photo_list_item_current.html")
-    ht = html_delimiter.replace("{group_title}", "카테고리")
-    for name, cat in category_list.items():
-        # 지금 보고있는 엔트리인가?
-        if name == current:
-            ht2 = html_list_item_cur.replace('{title}', cat.display_name)
-        else:
-            ht2 = html_list_item.replace('{title}', cat.display_name)
-            ht2 = ht2.replace('{filename}', name)
-        ht += ht2
-    ht += html_delimiter_end
-    return ht
 
 
 @app.route('/photo')
@@ -95,6 +77,7 @@ def photo_category(category):
     # ===== Content =====
     main_content = ""
     photo_content = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_entry.html')
+    photo_new = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/photo_new.html')
 
     # load data
     d = get_list()
@@ -107,6 +90,10 @@ def photo_category(category):
             main_content += renderer.fill_args(photo_content, arg)
     except KeyError:
         return abort(404)
+
+    if is_admin(request)[0]:
+        arg = {"{category}": category}
+        main_content += renderer.fill_args(photo_new, arg)
 
     # ===== Diary List =====
     profile_list = get_list()

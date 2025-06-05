@@ -1,0 +1,12 @@
+        <div class="entry_content">
+            <h3>카테고리 만들기</h3>
+            <form action="/photo/add_category" method="post">
+                URL 슬러그 : <input type="text" name="name"><br><br>
+                카테고리 이름 : <input type="text" name="display_name"><br><br>
+                <div class="tooltip">표시 여부 :
+                    <span class="tooltiptext tooltip-top">미공개로 설정하더라도 URL을 알고 있는<br>경우 게시물을 볼 수 있습니다.</span>
+                    <input type="checkbox" name="unlisted">미공개<br><br>
+                </div>
+                <input type="submit" value="만들기"><br>
+            </form>
+        </div><br>

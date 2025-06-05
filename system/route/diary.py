@@ -1,9 +1,10 @@
 from system.engine.server import app
 from system.engine.settings import site_settings
 from system.tool import renderer
+from system.tool.ip_filter import is_admin
 from system.object.diary import render_list, get_entry, get_list
 from datetime import datetime
-from flask import abort
+from flask import abort, request
 
 
 @app.route('/diary')
@@ -52,6 +53,12 @@ def diary_entry(entry):
         "{entry_content}": d.content
     }
     diary_content = renderer.fill_args(diary_content, arg)
+
+    # ===== Admin Context =====
+    if is_admin(request)[0]:
+        manage = renderer.get_html_file(f'theme/{site_settings()["theme"]}/html/diary_manage.html')
+        manage = manage.replace("{filename}", entry)
+        diary_content += manage
 
     # ===== Diary List =====
     diary_list = get_list()

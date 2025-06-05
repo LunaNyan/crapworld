@@ -1,0 +1,12 @@
+        <div class="entry_content">
+            <h3>사진 업로드</h3>
+            업로드된 사진 파일은 관리자 → 미디어 관리에서 확인할 수 있습니다.
+            <form action="/photo/{category}/add_item" method="post" enctype="multipart/form-data">
+                <ul>
+                    <li style="margin-bottom: 10px">사진 : <input type="file" name="file" multiple accept="image/*"><br></li>
+                    <li style="margin-bottom: 10px">URL 슬러그 : <input type="text" name="name"><br></li>
+                    <li style="margin-bottom: 10px">설명 : <input type="text" name="description"><br></li>
+                </ul>
+                <input type="submit" value="업로드">
+            </form>
+        </div><br>
