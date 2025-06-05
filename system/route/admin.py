@@ -12,7 +12,7 @@ def render_list(current=None):
         ["하단 바", "footer"],
         ["파도타기", "links"],
         ["커스텀 탭", "custom_tab"],
-        ["개발자", "dev"]
+        ["고급", "advanced"]
     ]
     html_delimiter = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter.html")
     html_delimiter_end = renderer.get_html_file(f"theme/{site_settings()['theme']}/html/diary_delimiter_end.html")

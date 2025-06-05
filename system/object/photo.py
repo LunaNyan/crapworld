@@ -76,6 +76,33 @@ def add_entry(category, name, description):
         yaml.dump(d, j, allow_unicode=True)
 
 
+def remove_entry(category, img_name):
+    # load photo.yaml
+    with open(cnv_path("data/photo.yaml"), "r", encoding="utf-8") as f:
+        d = yaml.load(f, yaml.FullLoader)
+
+    cat = None
+    catn = None
+    for n, i in enumerate(d):
+        if i["name"] == category:
+            cat = i
+            catn = n
+    if catn is None:
+        raise KeyError
+
+    pht = []
+    for n, i in enumerate(cat["photos"]):
+        if i["name"] == img_name:
+            continue
+        pht.append(i)
+
+    d[catn]["photos"] = pht
+
+    # save
+    with open("data/photo.yaml", "w", encoding="utf-8") as j:
+        yaml.dump(d, j, allow_unicode=True)
+
+
 def get_entry(category, img_name):
     # load photo.yaml
     with open(cnv_path("data/photo.yaml"), "r", encoding="utf-8") as f:

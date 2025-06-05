@@ -86,8 +86,7 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
 - [x] 사진첩
   - [x] 자세히 보기
   - [x] 새로 만들기 (카테고리, 사진 엔트리)
-  - [ ] 수정
-  - [ ] 삭제
+  - [x] 삭제
 - [x] 동영상 (= YouTube)
 - [ ] 사이트 관리 도구
   - [ ] 미디어 관리자 

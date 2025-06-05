@@ -4,7 +4,10 @@
             <form action="/photo/{category}/add_item" method="post" enctype="multipart/form-data">
                 <ul>
                     <li style="margin-bottom: 10px">사진 : <input type="file" name="file" multiple accept="image/*"><br></li>
-                    <li style="margin-bottom: 10px">URL 슬러그 : <input type="text" name="name"><br></li>
+                    <li style="margin-bottom: 10px"><div class="tooltip">
+                        <span class="tooltiptext tooltip-top">빈 칸으로 놔둘 경우 UUIDv4로 설정됩니다.</span>
+                        URL 슬러그 : <input type="text" name="name"><br>
+                    </div></li>
                     <li style="margin-bottom: 10px">설명 : <input type="text" name="description"><br></li>
                 </ul>
                 <input type="submit" value="업로드">
