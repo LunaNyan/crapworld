@@ -22,7 +22,7 @@ def set_account(username, passwd):
 
 
 def is_admin(req: request):
-    return True  # TODO : 만들기
+    return [True]  # TODO : 만들기
 
 
 def is_local_ip(req: request):
