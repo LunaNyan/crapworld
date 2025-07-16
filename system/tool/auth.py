@@ -1,9 +1,31 @@
 import conf
 from system.engine.settings import site_settings
-from flask import request
+from flask import request, session
+from argon2 import PasswordHasher
+from uuid import uuid4
+import yaml
+
+ph = PasswordHasher()
+login_session = None
+
+
+def get_shadow():
+    with open("data/shadow.yaml", "r", encoding="utf-8") as j:
+        shadow = yaml.load(j, yaml.FullLoader)
+    return shadow
+
+
+def set_account(username, passwd):
+    d = {"username": username, "passwd": ph.hash(passwd), "session_key": uuid4().hex}
+    with open("data/shadow.yaml", "w", encoding="utf-8") as j:
+        yaml.dump(d, j, allow_unicode=True)
 
 
 def is_admin(req: request):
+    return [True]  # TODO : 만들기
+
+
+def is_local_ip(req: request):
     # use_admin이 false면 뭔 짓을 해도 False가 나오도록 한다.
     if not site_settings()["use_admin"]:
         return False, ""

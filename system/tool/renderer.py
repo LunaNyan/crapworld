@@ -46,7 +46,7 @@ def render_tab(link: str, tab_name: str, selected: bool):
     return menu_item
 
 
-def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_dropdown=True):
+def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_dropdown=True, oobe=False):
     """
     메인 페이지를 렌더링하여 최종적으로 사용자가 보게 되는 HTML을 리턴한다.
 
@@ -55,55 +55,61 @@ def render_mainpage(content: str, tab_selected: str, extra_css: str, enable_drop
     """
     index_html = load_html_shard("common/index")
 
-    # ===== 탭 만들기 =====
-    tab_html = load_html_shard("common/menu")
-    # 구현된 기능에 대한 탭
-    tab_items = render_tab("/", site_settings()["home_tab_name"], tab_selected == "home")
-    if site_settings()["use_profile"]:
-        tab_items += render_tab("/profile", site_settings()["profile_tab_name"], tab_selected == "profile")
-    if site_settings()["use_diary"]:
-        tab_items += render_tab("/diary", site_settings()["diary_tab_name"], tab_selected == "diary")
-    if site_settings()["use_photo"]:
-        tab_items += render_tab("/photo", site_settings()["photo_tab_name"], tab_selected == "photo")
-    if site_settings()["use_gallery"]:
-        tab_items += render_tab("/gallery", site_settings()["gallery_tab_name"], tab_selected == "gallery")
-    if site_settings()["use_video"]:
-        tab_items += render_tab("/video", site_settings()["video_tab_name"], tab_selected == "video")
-    if site_settings()["use_guestbook"]:
-        tab_items += render_tab("/guestbook", site_settings()["guestbook_tab_name"], tab_selected == "guestbook")
-    # 이 밑으로는 사용자가 추가한 탭을 넣는다.
-    for i in site_settings()['link_tabs']:
-        tab_items += render_tab(i["url"], i["name"], False)
-    if conf.debug:
-        tab_items += render_tab("/debug", "디버그", tab_selected == "debug")
-    if is_admin(request)[0] and site_settings()['show_admin_tab']:
-        tab_items += render_tab("/admin", "관리자", tab_selected == "admin")
-    tab_html = tab_html.replace("{menu_items}", tab_items)
+    if not oobe:
+        # ===== 탭 만들기 =====
+        tab_html = load_html_shard("common/menu")
+        # 구현된 기능에 대한 탭
+        tab_items = render_tab("/", site_settings()["home_tab_name"], tab_selected == "home")
+        if site_settings()["use_profile"]:
+            tab_items += render_tab("/profile", site_settings()["profile_tab_name"], tab_selected == "profile")
+        if site_settings()["use_diary"]:
+            tab_items += render_tab("/diary", site_settings()["diary_tab_name"], tab_selected == "diary")
+        if site_settings()["use_photo"]:
+            tab_items += render_tab("/photo", site_settings()["photo_tab_name"], tab_selected == "photo")
+        if site_settings()["use_gallery"]:
+            tab_items += render_tab("/gallery", site_settings()["gallery_tab_name"], tab_selected == "gallery")
+        if site_settings()["use_video"]:
+            tab_items += render_tab("/video", site_settings()["video_tab_name"], tab_selected == "video")
+        if site_settings()["use_guestbook"]:
+            tab_items += render_tab("/guestbook", site_settings()["guestbook_tab_name"], tab_selected == "guestbook")
+        # 이 밑으로는 사용자가 추가한 탭을 넣는다.
+        for i in site_settings()['link_tabs']:
+            tab_items += render_tab(i["url"], i["name"], False)
+        if conf.debug:
+            tab_items += render_tab("/debug", "디버그", tab_selected == "debug")
+        if is_admin(request)[0] and site_settings()['show_admin_tab']:
+            tab_items += render_tab("/admin", "관리자", tab_selected == "admin")
+        tab_html = tab_html.replace("{menu_items}", tab_items)
 
-    # ===== 드롭다운 메뉴 만들기 =====
-    if enable_dropdown and site_settings()["use_dropdown"]:
-        # 드롭다운 메뉴 제작에 필요한 HTML을 로드한다.
-        drop_html = load_html_shard("dropdown/main")
-        drop_items = load_html_shard("dropdown/name")
-        drop_items = drop_items.replace("{name}", site_settings()["dropdown_name"])
-        drop_item_ind = load_html_shard("dropdown/item")
-        # 드롭다운 아이템 제작
-        for i in site_settings()["dropdown_items"]:
-            drop_arg = {
-                "{url}": i["url"],
-                "{name}": i["name"]
-            }
-            tmp = fill_args(drop_item_ind, drop_arg)
-            drop_items += tmp
-        # 드롭다운 메뉴 HTML에 넣는다.
-        drop_html = drop_html.replace("{dropdown_menus}", drop_items)
+        # ===== 드롭다운 메뉴 만들기 =====
+        if enable_dropdown and site_settings()["use_dropdown"]:
+            # 드롭다운 메뉴 제작에 필요한 HTML을 로드한다.
+            drop_html = load_html_shard("dropdown/main")
+            drop_items = load_html_shard("dropdown/name")
+            drop_items = drop_items.replace("{name}", site_settings()["dropdown_name"])
+            drop_item_ind = load_html_shard("dropdown/item")
+            # 드롭다운 아이템 제작
+            for i in site_settings()["dropdown_items"]:
+                drop_arg = {
+                    "{url}": i["url"],
+                    "{name}": i["name"]
+                }
+                tmp = fill_args(drop_item_ind, drop_arg)
+                drop_items += tmp
+            # 드롭다운 메뉴 HTML에 넣는다.
+            drop_html = drop_html.replace("{dropdown_menus}", drop_items)
+        else:
+            drop_html = load_html_shard("dropdown/placeholder")
+
+        # ===== 하단 링크 만들기 =====
+        footer_links = ""
+        for i in site_settings()["footer_links"]:
+            footer_links += f'{site_settings()["footer_delimiter"]}<a href="{i["url"]}">{i["name"]}</a>'
     else:
+        tab_html = load_html_shard("common/menu").replace("{menu_items}",
+                                                          render_tab("/oobe", "시작", True))
         drop_html = load_html_shard("dropdown/placeholder")
-
-    # ===== 하단 링크 만들기 =====
-    footer_links = ""
-    for i in site_settings()["footer_links"]:
-        footer_links += f'{site_settings()["footer_delimiter"]}<a href="{i["url"]}">{i["name"]}</a>'
+        footer_links = ""
 
     # 최종적으로 args를 채워넣는다.
     fill_arg = {
