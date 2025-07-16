@@ -55,6 +55,32 @@ Let's Encrypt SSL을 사용하고자 하는 경우, /etc/apache2/sites-available
 </VirtualHost>
 ```
 
+## 문제 해결
+### [리버스 프록시 설정 후 오류 발생 시](https://github.com/LunaNyan/crapworld/issues/1)
+Ubuntu에서 [deb.sury.org](https://deb.sury.org/) PPA를 통해 Apache2를 설치한 경우 ProxyPass와 관련된 모듈이 기본적으로 활성화되어 있습니다.
+
+하지만 일부 시스템에서는 리버스 프록시를 세팅한 후 httpd를 그냥 재시작하면 `Job for httpd.service failed` 오류가 발생하게 됩니다.
+
+이 때는 직접 모듈을 활성화 하여야 합니다.
+
+```shell
+sudo a2enmod remoteip
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod proxy_wstunnel
+sudo systemctl restart apache2  # 또는 httpd
+```
+
+### [setlocale에서 오류 발생 시](https://github.com/LunaNyan/crapworld/issues/1)
+싸구려월드는 컨텐츠의 게시 날짜(LC_TIME) 표시에 ko_KR.UTF-8 로케일을 요구합니다.
+
+`locale -a | grep ko_KR.UTF-8`을 실행했을 때 아무 것도 표시되지 않는다면 해당 로케일을 설치하여야 합니다.
+
+```shell
+sudo apt install locales -y
+sudo locale-gen ko_KR.UTF-8
+```
+
 ## 라이센스
 싸구려월드는 오픈 소스 프로젝트이며, [BSD 3-Clause](https://www.olis.or.kr/license/Detailselect.do?lId=1092) 라이센스로 제공됩니다.
 

@@ -2,6 +2,7 @@ from system.engine.server import app
 from system.engine.settings import site_settings
 from system.tool import renderer
 from system.tool.etc import cnv_path
+from system.engine.log_manager import logger as log
 from os import listdir
 from datetime import datetime
 from flask import abort
@@ -9,7 +10,12 @@ import yaml
 import operator
 import locale
 
-locale.setlocale(locale.LC_TIME, "ko_KR.UTF-8")
+try:
+    locale.setlocale(locale.LC_TIME, "ko_KR.UTF-8")
+except Exception as e:
+    log.warn(f"diary : Failed to set system locale : {e}")
+    log.warn("post date & time may shown incorrectly.")
+    log.warn("install and generate ko_KR.UTF-8 locale to fix this.")
 
 
 class DiaryEntry:
