@@ -1,4 +1,4 @@
-fmt_ver: 200
+fmt_ver: 10000
 
 # 테마
 theme: cinnamo
@@ -18,6 +18,10 @@ site_url: https://example.com
 todays_feeling_name: TODAY IS..
 # 관리자 모드 사용 여부
 use_admin: true
+# 관리자 탭을 표시할지의 여부
+show_admin_tab: true
+# 세션 키
+session_secret: changeme
 
 # ===============
 #      탭 이름

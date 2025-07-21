@@ -4,15 +4,20 @@ from system.appinfo import FMT_VER
 import conf
 import sys
 
+# 10000
+from os import urandom
+from base64 import b64encode
+
 # ===== Upgrade =====
 
 
 # 200 → 10000
 def do_upgrade_200_to_10000():
-    site_settings_append = """
+    site_settings_append = f"""
 # ===== 1.0.0 =====
 # 관리자 탭을 표시할지의 여부
 show_admin_tab: true
+session_secret: {b64encode(urandom(16))}
 """
     log.info("automatically editing site_settings.yaml")
 
