@@ -1,11 +1,11 @@
 import conf
 from system.engine.settings import site_settings
-from flask import request, session
-from argon2 import PasswordHasher
-from uuid import uuid4
+from flask import request
+# from argon2 import PasswordHasher
+# from uuid import uuid4
 import yaml
 
-ph = PasswordHasher()
+# ph = PasswordHasher()
 login_session = None
 
 
@@ -15,14 +15,26 @@ def get_shadow():
     return shadow
 
 
-def set_account(username, passwd):
-    d = {"username": username, "passwd": ph.hash(passwd), "session_key": uuid4().hex}
-    with open("data/shadow.yaml", "w", encoding="utf-8") as j:
-        yaml.dump(d, j, allow_unicode=True)
+# def set_account(username, passwd):
+#     d = {"username": username, "passwd": ph.hash(passwd), "session_key": uuid4().hex}
+#     with open("data/shadow.yaml", "w", encoding="utf-8") as j:
+#         yaml.dump(d, j, allow_unicode=True)
 
 
 def is_admin(req: request):
-    return [True]  # TODO : 만들기
+    # TODO: auth, session implement
+    #       how long takes to make that?
+    # use_admin이 false면 뭔 짓을 해도 False가 나오도록 한다.
+    if not site_settings()["use_admin"]:
+        return False, ""
+    ip = req.remote_addr
+    # if localhost
+    if ip.startswith("127."):
+        if conf.cloudflare:
+            cf_ip = req.headers.get('CF-Connecting-IP')
+            return False, cf_ip
+        else:
+            return True, ip
 
 
 def is_local_ip(req: request):
@@ -32,6 +44,7 @@ def is_local_ip(req: request):
     ip = req.remote_addr
     # if localhost
     if ip.startswith("127."):
+        # self
         if conf.cloudflare:
             cf_ip = req.headers.get('CF-Connecting-IP')
             return False, cf_ip
@@ -47,6 +60,7 @@ def is_local_ip(req: request):
         else:
             return False, ip
     elif ip.startswith("100."):
+        # Vendor Private Class (e.g. Tailscale)
         ip2 = int(ip.split(".")[1])
         if 64 <= ip2 <= 127:
             return True, ip
