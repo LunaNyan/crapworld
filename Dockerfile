@@ -1,5 +1,3 @@
-LABEL org.opencontainers.image.source https://github.com/lunanyan/crapworld
-
 FROM python:3.12.10-alpine3.21
 
 ADD . /app
@@ -12,3 +10,5 @@ RUN apk add git
 EXPOSE 11111
 
 CMD [ "python", "./y2k_server.py" ]
+
+LABEL org.opencontainers.image.source https://github.com/lunanyan/crapworld
