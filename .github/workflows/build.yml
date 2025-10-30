@@ -29,4 +29,4 @@ jobs:
         context: .
         push: true
         platforms: linux/amd64, linux/arm64
-        tags: ghcr.io/${{ github.repository_owner }}/crapworld:dev
+        tags: ghcr.io/lunanyan/crapworld:dev
