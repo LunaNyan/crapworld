@@ -1,6 +1,6 @@
 import conf
 from system.engine.settings import site_settings
-from flask import request, session
+from flask import request
 from argon2 import PasswordHasher
 from uuid import uuid4
 import yaml
@@ -19,10 +19,6 @@ def set_account(username, passwd):
     d = {"username": username, "passwd": ph.hash(passwd), "session_key": uuid4().hex}
     with open("data/shadow.yaml", "w", encoding="utf-8") as j:
         yaml.dump(d, j, allow_unicode=True)
-
-
-def is_admin(req: request):
-    return [True]  # TODO : 만들기
 
 
 def is_local_ip(req: request):
@@ -54,3 +50,11 @@ def is_local_ip(req: request):
             return False, ip
     else:
         return False, ip
+
+
+def is_admin(req: request):
+    ip = req.remote_addr
+    if is_local_ip(req):
+        return [True, ip]  # TODO : 만들기
+    else:
+        return [False, ip]
