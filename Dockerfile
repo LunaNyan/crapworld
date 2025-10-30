@@ -1,4 +1,4 @@
-LABEL org.opencontainers.image.source=https://github.com/lunanyan/crapworld
+LABEL org.opencontainers.image.source https://github.com/lunanyan/crapworld
 
 FROM python:3.12.10-alpine3.21
 
