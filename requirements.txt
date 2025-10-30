@@ -8,4 +8,4 @@ pillow
 
 # 0.9.0 (auth branch)
 flask-login
-argon2
+# argon2
